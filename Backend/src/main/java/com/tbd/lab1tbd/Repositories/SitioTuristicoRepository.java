@@ -120,5 +120,28 @@ public class SitioTuristicoRepository {
         String sql = "DELETE FROM sitios_turisticos WHERE id = :id";
         return jdbc.update(sql, Map.of("id", id));
     }
+
+    /**
+     * Obtiene los sitios turísticos más populares (ordenados por calificación y número de reseñas).
+     * Retorna los top 10 sitios con mejor calificación.
+     */
+    public List<SitioTuristico> findPopulares() {
+        String sql = "SELECT " + SELECT_COLUMNS +
+                     "FROM sitios_turisticos " +
+                     "WHERE total_reseñas > 0 " +
+                     "ORDER BY calificacion_promedio DESC, total_reseñas DESC " +
+                     "LIMIT 10";
+        return jdbc.query(sql, MAPPER);
+    }
+
+    /**
+     * Busca sitios turísticos por tipo.
+     */
+    public List<SitioTuristico> findByTipo(String tipo) {
+        String sql = "SELECT " + SELECT_COLUMNS +
+                     "FROM sitios_turisticos " +
+                     "WHERE tipo = :tipo";
+        return jdbc.query(sql, Map.of("tipo", tipo), MAPPER);
+    }
 }
 

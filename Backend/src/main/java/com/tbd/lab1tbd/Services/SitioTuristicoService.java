@@ -40,4 +40,12 @@ public class SitioTuristicoService {
             throw new RuntimeException("Sitio Turístico no encontrado");
         }
     }
+
+    public List<SitioTuristico> getPopulares() {
+        return repository.findPopulares();
+    }
+
+    public List<SitioTuristico> getByTipo(String tipo) {
+        return repository.findByTipo(tipo);
+    }
 }

@@ -69,4 +69,24 @@ public class SitioTuristicoController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * GET /api/sitios/populares
+     * Obtiene los sitios turísticos más populares (top 10 por calificación).
+     * Requiere autenticación JWT.
+     */
+    @GetMapping("/populares")
+    public List<SitioTuristico> getPopulares() {
+        return service.getPopulares();
+    }
+
+    /**
+     * GET /api/sitios/tipo?tipo={tipo}
+     * Filtra sitios turísticos por tipo.
+     * Requiere autenticación JWT.
+     */
+    @GetMapping("/tipo")
+    public List<SitioTuristico> getByTipo(@RequestParam String tipo) {
+        return service.getByTipo(tipo);
+    }
 }
