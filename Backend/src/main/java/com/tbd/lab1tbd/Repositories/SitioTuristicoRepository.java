@@ -1,0 +1,124 @@
+package com.tbd.lab1tbd.Repositories;
+
+import com.tbd.lab1tbd.Entities.SitioTuristico;
+import com.tbd.lab1tbd.Dto.SitioTuristicoRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Repository
+@RequiredArgsConstructor
+public class SitioTuristicoRepository {
+
+    private final NamedParameterJdbcTemplate jdbc;
+
+    /**
+     * RowMapper para convertir una fila de 'sitios_turisticos' a nuestro POJO.
+     * Usa funciones de PostGIS (ST_Y para lat, ST_X para lon) para extraer
+     * las coordenadas del tipo 'geography'.
+     */
+    private static final RowMapper<SitioTuristico> MAPPER = new RowMapper<>() {
+        @Override
+        public SitioTuristico mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new SitioTuristico(
+                    rs.getLong("id"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getString("tipo"),
+                    rs.getDouble("latitud"), // Obtenido del alias ST_Y
+                    rs.getDouble("longitud"), // Obtenido del alias ST_X
+                    rs.getDouble("calificacion_promedio"),
+                    rs.getInt("total_reseñas")
+            );
+        }
+    };
+
+    // Columnas base para las consultas SELECT
+    private static final String SELECT_COLUMNS = 
+        "id, nombre, descripcion, tipo, calificacion_promedio, total_reseñas, " +
+        "ST_Y(coordenadas::geometry) AS latitud, " +
+        "ST_X(coordenadas::geometry) AS longitud ";
+
+    /**
+     * Obtiene todos los sitios turísticos.
+     */
+    public List<SitioTuristico> findAll() {
+        String sql = "SELECT " + SELECT_COLUMNS + "FROM sitios_turisticos";
+        return jdbc.query(sql, MAPPER);
+    }
+
+    /**
+     * Busca un sitio por su ID.
+     */
+    public Optional<SitioTuristico> findById(Long id) {
+        String sql = "SELECT " + SELECT_COLUMNS + "FROM sitios_turisticos WHERE id = :id";
+        try {
+            return Optional.ofNullable(jdbc.queryForObject(sql, Map.of("id", id), MAPPER));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Crea un nuevo sitio turístico.
+     * Usa ST_SetSRID(ST_MakePoint(lon, lat), 4326) para crear el punto 'geography'.
+     */
+    public Long create(SitioTuristicoRequest sitio) {
+        String sql = """
+                INSERT INTO sitios_turisticos (nombre, descripcion, tipo, coordenadas)
+                VALUES (:nombre, :descripcion, :tipo, ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))
+                RETURNING id
+                """;
+        
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("nombre", sitio.getNombre())
+                .addValue("descripcion", sitio.getDescripcion())
+                .addValue("tipo", sitio.getTipo())
+                .addValue("longitud", sitio.getLongitud())
+                .addValue("latitud", sitio.getLatitud());
+
+        return jdbc.queryForObject(sql, params, Long.class);
+    }
+
+    /**
+     * Actualiza un sitio turístico existente.
+     */
+    public int update(Long id, SitioTuristicoRequest sitio) {
+        String sql = """
+                UPDATE sitios_turisticos
+                SET nombre = :nombre,
+                    descripcion = :descripcion,
+                    tipo = :tipo,
+                    coordenadas = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326)
+                WHERE id = :id
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("nombre", sitio.getNombre())
+                .addValue("descripcion", sitio.getDescripcion())
+                .addValue("tipo", sitio.getTipo())
+                .addValue("longitud", sitio.getLongitud())
+                .addValue("latitud", sitio.getLatitud());
+
+        return jdbc.update(sql, params);
+    }
+
+    /**
+     * Elimina un sitio turístico por su ID.
+     */
+    public int delete(Long id) {
+        String sql = "DELETE FROM sitios_turisticos WHERE id = :id";
+        return jdbc.update(sql, Map.of("id", id));
+    }
+}
+
