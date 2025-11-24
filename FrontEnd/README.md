@@ -43,7 +43,7 @@ cp .env.example .env
 Edita el archivo `.env` y configura la URL de tu backend:
 
 ```
-VITE_API_URL=http://localhost:8080/api
+VITE_API_URL=http://localhost:8090/api
 ```
 
 ### 2. Instalación de Dependencias
