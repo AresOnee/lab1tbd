@@ -60,6 +60,13 @@ public class ReseñaService {
     }
 
     /**
+     * Obtiene todas las reseñas de un usuario específico.
+     */
+    public List<ReseñaResponse> getByUsuarioId(Long idUsuario) {
+        return reseñaRepository.findByUsuarioId(idUsuario);
+    }
+
+    /**
      * Actualiza una reseña.
      */
     public void update(Long idReseña, ReseñaRequest request, String userEmail) {

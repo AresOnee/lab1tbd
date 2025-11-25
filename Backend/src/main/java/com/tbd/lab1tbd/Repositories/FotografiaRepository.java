@@ -55,6 +55,14 @@ public class FotografiaRepository {
     }
 
     /**
+     * Obtiene todas las fotografías de un usuario específico.
+     */
+    public List<FotografiaResponse> findByUsuarioId(Long idUsuario) {
+        String sql = SELECT_SQL + "WHERE f.id_usuario = :idUsuario ORDER BY f.fecha DESC";
+        return jdbc.query(sql, Map.of("idUsuario", idUsuario), RESPONSE_MAPPER);
+    }
+
+    /**
      * Crea una nueva fotografía.
      */
     public Long create(Fotografia fotografia) {

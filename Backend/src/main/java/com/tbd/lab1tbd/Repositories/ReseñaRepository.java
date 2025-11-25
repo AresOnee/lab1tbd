@@ -57,6 +57,14 @@ public class ReseñaRepository {
     }
 
     /**
+     * Obtiene todas las reseñas de un usuario específico.
+     */
+    public List<ReseñaResponse> findByUsuarioId(Long idUsuario) {
+        String sql = SELECT_SQL + "WHERE r.id_usuario = :idUsuario ORDER BY r.fecha DESC";
+        return jdbc.query(sql, Map.of("idUsuario", idUsuario), RESPONSE_MAPPER);
+    }
+
+    /**
      * Busca una reseña por su ID.
      */
     public Optional<ReseñaResponse> findById(Long idReseña) {
