@@ -25,7 +25,8 @@ public class UserRepository {
                     rs.getLong("id"),
                     rs.getString("nombre"),
                     rs.getString("email"),
-                    rs.getString("contrasena_hash")
+                    rs.getString("contrasena_hash"),
+                    rs.getString("biografia")
             );
         }
     };
@@ -45,7 +46,7 @@ public class UserRepository {
     }
 
     public Optional<UserEntity> getbyid(Long id) {
-        String sql = "SELECT id, nombre, email, contrasena_hash FROM usuarios WHERE id=:id";
+        String sql = "SELECT id, nombre, email, contrasena_hash, biografia FROM usuarios WHERE id=:id";
         try {
             return Optional.ofNullable(jdbc.queryForObject(sql, Map.of("id", id), MAPPER));
         } catch (EmptyResultDataAccessException e) {
@@ -55,7 +56,7 @@ public class UserRepository {
     
     // ... (El método getByEmail será necesario para el Login) ...
     public Optional<UserEntity> getByEmail(String email) {
-        String sql = "SELECT id, nombre, email, contrasena_hash FROM usuarios WHERE email=:email";
+        String sql = "SELECT id, nombre, email, contrasena_hash, biografia FROM usuarios WHERE email=:email";
         try {
             return Optional.ofNullable(jdbc.queryForObject(sql, Map.of("email", email), MAPPER));
         } catch (EmptyResultDataAccessException e) {
