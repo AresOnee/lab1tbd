@@ -37,14 +37,15 @@ public class SitioTuristicoRepository {
                     rs.getDouble("latitud"), // Obtenido del alias ST_Y
                     rs.getDouble("longitud"), // Obtenido del alias ST_X
                     rs.getDouble("calificacion_promedio"),
-                    rs.getInt("total_reseñas")
+                    rs.getInt("total_reseñas") // PostgreSQL devuelve sin comillas en ResultSet
             );
         }
     };
 
     // Columnas base para las consultas SELECT
-    private static final String SELECT_COLUMNS = 
-        "id, nombre, descripcion, tipo, calificacion_promedio, total_reseñas, " +
+    // Usamos comillas dobles para columnas con caracteres especiales (ñ)
+    private static final String SELECT_COLUMNS =
+        "id, nombre, descripcion, tipo, calificacion_promedio, \"total_reseñas\", " +
         "ST_Y(coordenadas::geometry) AS latitud, " +
         "ST_X(coordenadas::geometry) AS longitud ";
 
@@ -128,8 +129,8 @@ public class SitioTuristicoRepository {
     public List<SitioTuristico> findPopulares() {
         String sql = "SELECT " + SELECT_COLUMNS +
                      "FROM sitios_turisticos " +
-                     "WHERE total_reseñas > 0 " +
-                     "ORDER BY calificacion_promedio DESC, total_reseñas DESC " +
+                     "WHERE \"total_reseñas\" > 0 " +
+                     "ORDER BY calificacion_promedio DESC, \"total_reseñas\" DESC " +
                      "LIMIT 10";
         return jdbc.query(sql, MAPPER);
     }
