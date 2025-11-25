@@ -35,6 +35,11 @@ public class ListaController {
         return listaService.getByUsuario(userEmail);
     }
 
+    @GetMapping("/usuario/{idUsuario}")
+    public List<ListaResponse> getListasByUsuarioId(@PathVariable Long idUsuario) {
+        return listaService.getByUsuarioId(idUsuario);
+    }
+
     @DeleteMapping("/{idLista}")
     public ResponseEntity<Void> deleteLista(
             @PathVariable Long idLista,

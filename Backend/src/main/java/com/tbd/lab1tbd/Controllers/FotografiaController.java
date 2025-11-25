@@ -45,6 +45,16 @@ public class FotografiaController {
     }
 
     /**
+     * GET /api/fotografias/usuario/{idUsuario}
+     * Obtiene todas las fotografías de un usuario específico.
+     * Requiere autenticación JWT.
+     */
+    @GetMapping("/fotografias/usuario/{idUsuario}")
+    public List<FotografiaResponse> getFotografiasPorUsuario(@PathVariable Long idUsuario) {
+        return fotografiaService.getByUsuarioId(idUsuario);
+    }
+
+    /**
      * DELETE /api/fotografias/{idFotografia}
      * Elimina una fotografía específica.
      * Requiere autenticación JWT y ser el autor.

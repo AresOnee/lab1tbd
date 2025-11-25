@@ -49,6 +49,10 @@ public class ListaService {
         return listaRepository.findByUsuarioId(idUsuario);
     }
 
+    public List<ListaResponse> getByUsuarioId(Long idUsuario) {
+        return listaRepository.findByUsuarioId(idUsuario);
+    }
+
     public List<SitioTuristico> getSitios(Long idLista) {
         // Opcional: podrías verificar si la lista existe primero
         // listaRepository.findAutorId(idLista).orElseThrow(...);

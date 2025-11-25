@@ -45,6 +45,16 @@ public class ReseñaController {
     }
 
     /**
+     * GET /api/resenas/usuario/{idUsuario}
+     * Obtiene todas las reseñas de un usuario específico.
+     * Requiere autenticación JWT.
+     */
+    @GetMapping("/resenas/usuario/{idUsuario}")
+    public List<ReseñaResponse> getReseñasPorUsuario(@PathVariable Long idUsuario) {
+        return reseñaService.getByUsuarioId(idUsuario);
+    }
+
+    /**
      * PUT /api/reseñas/{idReseña}
      * Actualiza una reseña específica.
      * Requiere autenticación JWT y ser el autor.

@@ -59,6 +59,13 @@ public class FotografiaService {
     }
 
     /**
+     * Obtiene todas las fotografías de un usuario específico.
+     */
+    public List<FotografiaResponse> getByUsuarioId(Long idUsuario) {
+        return fotografiaRepository.findByUsuarioId(idUsuario);
+    }
+
+    /**
      * Elimina una fotografía.
      */
     public void delete(Long idFotografia, String userEmail) {
