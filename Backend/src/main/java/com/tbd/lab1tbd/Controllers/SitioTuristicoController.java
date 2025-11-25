@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sitios")
+@RequestMapping("/sitios")
 @RequiredArgsConstructor
 public class SitioTuristicoController {
 
@@ -25,7 +25,7 @@ public class SitioTuristicoController {
     @PostMapping
     public ResponseEntity<Long> create(@RequestBody SitioTuristicoRequest sitio) {
         Long id = service.create(sitio);
-        return ResponseEntity.created(URI.create("/api/sitios/" + id)).body(id);
+        return ResponseEntity.created(URI.create("/sitios/" + id)).body(id);
     }
 
     /**
