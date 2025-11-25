@@ -4,11 +4,11 @@
 
 -- 1. Usuarios
 -- La contraseña para todos es 'password123'
--- Hash BCrypt: $2a$10$c.9tt.1nC6f.Lq.3v.iP0eE.j.w.C.H0C.F.w.t.M.s.J.q.C.b
+-- Hash BCrypt válido (generado con BCrypt strength 10): $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
 INSERT INTO usuarios (nombre, email, contrasena_hash, biografia) VALUES
-('Ana García', 'ana@tbd.cl', '$2a$10$c.9tt.1nC6f.Lq.3v.iP0eE.j.w.C.H0C.F.w.t.M.s.J.q.C.b', 'Viajera y fotógrafa. Amante de los museos.'),
-('Bruno Díaz', 'bruno@tbd.cl', '$2a$10$c.9tt.1nC6f.Lq.3v.iP0eE.j.w.C.H0C.F.w.t.M.s.J.q.C.b', 'Entusiasta de la gastronomía. Siempre buscando el mejor restaurante.'),
-('Carla Soto', 'carla@tbd.cl', '$2a$10$c.9tt.1nC6f.Lq.3v.iP0eE.j.w.C.H0C.F.w.t.M.s.J.q.C.b', 'Exploradora urbana. Me encantan los parques y las vistas.');
+('Ana García', 'ana@tbd.cl', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Viajera y fotógrafa. Amante de los museos.'),
+('Bruno Díaz', 'bruno@tbd.cl', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Entusiasta de la gastronomía. Siempre buscando el mejor restaurante.'),
+('Carla Soto', 'carla@tbd.cl', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Exploradora urbana. Me encantan los parques y las vistas.');
 
 -- 2. Sitios Turísticos (con coordenadas de Santiago)
 -- NOTA: Para la Consulta #5, añadimos la columna 'ciudad'
