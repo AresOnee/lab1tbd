@@ -4,12 +4,13 @@
 
 -- INFORMACIÓN IMPORTANTE:
 -- Contraseña para todos los usuarios: password123
--- Hash BCrypt válido (generado con BCrypt strength 10)
--- $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
+-- Hash BCrypt VÁLIDO Y VERIFICADO (generado con BCrypt strength 10)
+-- $2a$10$eA95nPuWcZ.TC7KA5i1OveQ/FJzUTssTaRrJbcmGzPijoIWY8F.O2
+-- Este hash fue generado y verificado con GenerarHash.java
 
 -- Actualizar las contraseñas de los usuarios existentes
 UPDATE usuarios
-SET contrasena_hash = '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'
+SET contrasena_hash = '$2a$10$eA95nPuWcZ.TC7KA5i1OveQ/FJzUTssTaRrJbcmGzPijoIWY8F.O2'
 WHERE email IN ('ana@tbd.cl', 'bruno@tbd.cl', 'carla@tbd.cl');
 
 -- Verificar las actualizaciones
