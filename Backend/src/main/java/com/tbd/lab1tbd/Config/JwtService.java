@@ -19,7 +19,8 @@ public class JwtService {
 
     // Clave secreta para firmar el token. DEBE ser larga y segura.
     // En una app real, esto debe estar en 'application.properties' y no en el código.
-    private static final String SECRET_KEY = "tu_clave_secreta_super_larga_y_segura_debe_ir_aqui_42_tbd";
+    // Esta clave está en formato Base64 (256 bits / 32 bytes para HS256)
+    private static final String SECRET_KEY = "k0cD+qIXX4WE9unRxMLahH/vQPEoZ55rmf2YYlbL/50=";
 
     // Tiempo de expiración del token (ej. 1 hora)
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
