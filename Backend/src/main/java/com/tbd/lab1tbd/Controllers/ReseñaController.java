@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 @RequiredArgsConstructor
 public class ReseñaController {
 
@@ -31,7 +31,7 @@ public class ReseñaController {
     ) {
         String userEmail = authentication.getName();
         Long idReseña = reseñaService.create(idSitio, request, userEmail);
-        return ResponseEntity.created(URI.create("/api/reseñas/" + idReseña)).body(idReseña);
+        return ResponseEntity.created(URI.create("/reseñas/" + idReseña)).body(idReseña);
     }
 
     /**
