@@ -34,15 +34,28 @@ public class AuthenticationService {
         // o ajusta el nombre del campo si es 'contrasena_hash')
 
         // Guardamos en la BD usando tu repositorio
-        // (Asumimos que el método 'create' devuelve el ID, pero no lo usamos aquí)
-        userRepository.create(user);
+        Long userId = userRepository.create(user);
+        user.setId(userId);
 
         // Creamos los UserDetails para el token
         var userDetails = new User(request.getEmail(), user.getPassword(), java.util.Collections.emptyList());
-        
-        // Generamos y devolvemos el token JWT
+
+        // Generamos el token JWT
         String jwtToken = jwtService.generateToken(userDetails);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+
+        // Creamos el DTO del usuario (sin información sensible)
+        UserDTO userDTO = UserDTO.builder()
+                .id(user.getId())
+                .nombre(user.getName())
+                .email(user.getEmail())
+                .biografia(user.getBiografia())
+                .build();
+
+        // Devolvemos tanto el token como el usuario
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .user(userDTO)
+                .build();
     }
 
     /**
@@ -62,12 +75,25 @@ public class AuthenticationService {
         // buscamos al usuario para generar el token.
         var user = userRepository.getByEmail(request.getEmail())
                 .orElseThrow(); // Debería existir si la autenticación pasó
-        
+
         // Creamos los UserDetails para el token
         var userDetails = new User(user.getEmail(), user.getPassword(), java.util.Collections.emptyList());
 
-        // Generamos y devolvemos el token
+        // Generamos el token JWT
         String jwtToken = jwtService.generateToken(userDetails);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+
+        // Creamos el DTO del usuario (sin información sensible)
+        UserDTO userDTO = UserDTO.builder()
+                .id(user.getId())
+                .nombre(user.getName())
+                .email(user.getEmail())
+                .biografia(user.getBiografia())
+                .build();
+
+        // Devolvemos tanto el token como el usuario
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .user(userDTO)
+                .build();
     }
 }
