@@ -2,6 +2,8 @@ package com.tbd.lab1tbd.Config;
 
 import com.tbd.lab1tbd.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
     private final UserRepository userRepository;
 
     /**
@@ -25,14 +28,28 @@ public class ApplicationConfig {
      */
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.getByEmail(username)
-                // Convertimos nuestro UserEntity a UserDetails de Spring Security
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getEmail(),
-                        user.getPassword(), // Aquí va la contraseña hasheada
-                        java.util.Collections.emptyList() // Roles/Autoridades (vacío por ahora)
-                ))
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + username));
+        return username -> {
+            logger.info("🔍 Buscando usuario: {}", username);
+
+            return userRepository.getByEmail(username)
+                    // Convertimos nuestro UserEntity a UserDetails de Spring Security
+                    .map(user -> {
+                        String hash = user.getPassword();
+                        logger.info("✅ Usuario encontrado - Email: {}", username);
+                        logger.info("📝 Hash longitud: {} caracteres", hash != null ? hash.length() : 0);
+                        logger.info("📝 Hash completo: {}", hash);
+
+                        return new org.springframework.security.core.userdetails.User(
+                                user.getEmail(),
+                                hash, // Aquí va la contraseña hasheada
+                                java.util.Collections.emptyList() // Roles/Autoridades (vacío por ahora)
+                        );
+                    })
+                    .orElseThrow(() -> {
+                        logger.error("❌ Usuario NO encontrado: {}", username);
+                        return new UsernameNotFoundException("Usuario no encontrado con email: " + username);
+                    });
+        };
     }
 
     /**
