@@ -24,7 +24,7 @@ public class ReseñaRepository {
 
     /**
      * RowMapper para nuestro DTO de Respuesta.
-     * Une 'reseñas' con 'usuarios' para obtener el nombre.
+     * Une 'resenas' con 'usuarios' para obtener el nombre.
      */
     private static final RowMapper<ReseñaResponse> RESPONSE_MAPPER = new RowMapper<>() {
         @Override
@@ -42,10 +42,10 @@ public class ReseñaRepository {
     };
 
     // SQL para la consulta del Response
-    private static final String SELECT_SQL = 
-        "SELECT r.id AS id_reseña, r.contenido, r.calificacion, r.fecha, " + 
+    private static final String SELECT_SQL =
+        "SELECT r.id AS id_reseña, r.contenido, r.calificacion, r.fecha, " +
         "r.id_usuario, u.nombre AS nombre_usuario, r.id_sitio " +
-        "FROM reseñas r " +
+        "FROM resenas r " +
         "JOIN usuarios u ON r.id_usuario = u.id ";
 
     /**
@@ -82,11 +82,11 @@ public class ReseñaRepository {
      */
     public Long create(Reseña reseña) {
         String sql = """
-                INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion)
+                INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion)
                 VALUES (:idUsuario, :idSitio, :contenido, :calificacion)
                 RETURNING id
                 """;
-        
+
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("idUsuario", reseña.getIdUsuario())
                 .addValue("idSitio", reseña.getIdSitio())
@@ -101,16 +101,16 @@ public class ReseñaRepository {
      */
     public int update(Long idReseña, ReseñaRequest reseña) {
         String sql = """
-                UPDATE reseñas
+                UPDATE resenas
                 SET contenido = :contenido, calificacion = :calificacion
                 WHERE id = :idReseña
                 """;
-        
+
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("idReseña", idReseña)
                 .addValue("contenido", reseña.getContenido())
                 .addValue("calificacion", reseña.getCalificacion());
-        
+
         return jdbc.update(sql, params);
     }
 
@@ -118,7 +118,7 @@ public class ReseñaRepository {
      * Elimina una reseña por su ID.
      */
     public int delete(Long idReseña) {
-        String sql = "DELETE FROM reseñas WHERE id = :idReseña";
+        String sql = "DELETE FROM resenas WHERE id = :idReseña";
         return jdbc.update(sql, Map.of("idReseña", idReseña));
     }
 
@@ -127,7 +127,7 @@ public class ReseñaRepository {
      * Esto es crucial para la lógica de autorización (que solo el autor pueda editar/borrar).
      */
     public Optional<Long> findAutorId(Long idReseña) {
-        String sql = "SELECT id_usuario FROM reseñas WHERE id = :idReseña";
+        String sql = "SELECT id_usuario FROM resenas WHERE id = :idReseña";
         try {
             return Optional.ofNullable(jdbc.queryForObject(sql, Map.of("idReseña", idReseña), Long.class));
         } catch (EmptyResultDataAccessException e) {
