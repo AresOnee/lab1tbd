@@ -20,5 +20,5 @@ public class SitioTuristico {
 
     // Campos calculados por el trigger
     private Double calificacionPromedio;
-    private Integer totalReseñas;
+    private Integer totalResenas;
 }
