@@ -3,13 +3,13 @@
 -- =============================================
 
 -- Consulta 1: Cálculo de Calificación Promedio y Conteo de Reseñas por tipo.
-SELECT 
-    tipo, 
-    AVG(calificacion_promedio) AS calificacion_promedio_general, 
-    SUM(total_reseñas) AS total_reseñas_general
-FROM 
+SELECT
+    tipo,
+    AVG(calificacion_promedio) AS calificacion_promedio_general,
+    SUM(total_resenas) AS total_resenas_general
+FROM
     sitios_turisticos
-GROUP BY 
+GROUP BY
     tipo;
 
 -- Consulta 2: Identificación de los 5 Reseñadores Más Activos (últimos 6 meses).
@@ -50,32 +50,32 @@ WHERE
     AND t.id != r.id; -- Asegurarse de no comparar un sitio consigo mismo
 
 -- Consulta 4: Detección de Sitios con Valoraciones Inusuales (Promedio > 4.5, < 10 reseñas).
-SELECT 
+SELECT
     nombre,
     calificacion_promedio,
-    total_reseñas
-FROM 
+    total_resenas
+FROM
     sitios_turisticos
-WHERE 
-    calificacion_promedio > 4.5 
-    AND total_reseñas < 10;
+WHERE
+    calificacion_promedio > 4.5
+    AND total_resenas < 10;
 
 -- Consulta 5: Análisis de Popularidad por Región.
 -- NOTA: El esquema original no incluye 'región' o 'ciudad'.
 -- Para que esta consulta funcione, se DEBE agregar una columna a 'sitios_turisticos'.
 -- Ejemplo de ALTER: ALTER TABLE sitios_turisticos ADD COLUMN ciudad VARCHAR(100);
 -- Asumiendo que la columna 'ciudad' existe y está poblada:
-SELECT 
-    ciudad, 
-    SUM(total_reseñas) AS total_reseñas_por_ciudad
-FROM 
+SELECT
+    ciudad,
+    SUM(total_resenas) AS total_resenas_por_ciudad
+FROM
     sitios_turisticos
 WHERE
     ciudad IS NOT NULL
-GROUP BY 
+GROUP BY
     ciudad
-ORDER BY 
-    total_reseñas_por_ciudad DESC;
+ORDER BY
+    total_resenas_por_ciudad DESC;
 
 -- Consulta 6: Actualización Masiva de Calificaciones (Trigger).
 -- Esta consulta está implementada como un TRIGGER en 'tablitas.sql'.

@@ -38,10 +38,10 @@ public class ListaRepository {
             rs.getString("nombre"),
             rs.getString("descripcion"),
             rs.getString("tipo"),
-            rs.getDouble("latitud"), 
-            rs.getDouble("longitud"), 
+            rs.getDouble("latitud"),
+            rs.getDouble("longitud"),
             rs.getDouble("calificacion_promedio"),
-            rs.getInt("total_reseñas")
+            rs.getInt("total_resenas")
     );
 
     public Long create(ListaPersonalizada lista) {
@@ -93,7 +93,7 @@ public class ListaRepository {
 
     public List<SitioTuristico> getSitiosByListaId(Long idLista) {
         String sql = "SELECT s.id, s.nombre, s.descripcion, s.tipo, " +
-                     "s.calificacion_promedio, s.total_reseñas, " +
+                     "s.calificacion_promedio, s.total_resenas, " +
                      "ST_Y(s.coordenadas::geometry) AS latitud, " +
                      "ST_X(s.coordenadas::geometry) AS longitud " +
                      "FROM sitios_turisticos s " +
