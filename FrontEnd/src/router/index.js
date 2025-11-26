@@ -22,6 +22,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/sitios/cercanos',
+      name: 'nearby-sites',
+      component: () => import('@/views/NearbySitesView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/sitios/crear',
       name: 'site-create',
       component: () => import('@/views/SiteFormView.vue'),

@@ -143,5 +143,26 @@ public class SitioTuristicoRepository {
                      "WHERE tipo = :tipo";
         return jdbc.query(sql, Map.of("tipo", tipo), MAPPER);
     }
+
+    /**
+     * Busca sitios turísticos cercanos a una ubicación específica.
+     * Utiliza el procedimiento almacenado 'buscar_sitios_cercanos' de PostGIS.
+     *
+     * @param longitud Longitud de la ubicación de referencia
+     * @param latitud Latitud de la ubicación de referencia
+     * @param radioMetros Radio de búsqueda en metros
+     * @return Lista de sitios turísticos dentro del radio especificado
+     */
+    public List<SitioTuristico> findCercanos(Double longitud, Double latitud, Integer radioMetros) {
+        String sql = "SELECT " + SELECT_COLUMNS +
+                     "FROM buscar_sitios_cercanos(:longitud, :latitud, :radio)";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("longitud", longitud)
+                .addValue("latitud", latitud)
+                .addValue("radio", radioMetros);
+
+        return jdbc.query(sql, params, MAPPER);
+    }
 }
 
