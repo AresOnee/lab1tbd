@@ -16,4 +16,5 @@ public class ListaResponse {
     private String nombreUsuario; // Lo sacaremos de un JOIN
     private String nombreLista;
     private Timestamp fechaCreacion;
+    private Integer totalSitios; // Cantidad de sitios en la lista
 }

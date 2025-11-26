@@ -16,7 +16,7 @@
       <div v-else-if="lists.length > 0" class="lists-grid">
         <div v-for="list in lists" :key="list.id" class="list-card">
           <div class="list-header">
-            <h3>{{ list.nombre }}</h3>
+            <h3>{{ list.nombreLista }}</h3>
             <div class="list-actions">
               <button @click="viewList(list.id)" class="btn-icon" title="Ver">
                 👁️
