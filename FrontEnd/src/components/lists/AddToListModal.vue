@@ -31,7 +31,7 @@
             >
               <h3>{{ list.nombreLista }}</h3>
               <p class="list-description">{{ list.descripcion || 'Sin descripción' }}</p>
-              <span class="list-count">{{ list.sitios?.length || 0 }} sitios</span>
+              <span class="list-count">{{ list.totalSitios || 0 }} sitios</span>
             </div>
           </div>
 
