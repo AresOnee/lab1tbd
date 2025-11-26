@@ -29,7 +29,7 @@
               @click="handleSelectList(list.id)"
               :class="{ selected: selectedListId === list.id }"
             >
-              <h3>{{ list.nombre }}</h3>
+              <h3>{{ list.nombreLista }}</h3>
               <p class="list-description">{{ list.descripcion || 'Sin descripción' }}</p>
               <span class="list-count">{{ list.sitios?.length || 0 }} sitios</span>
             </div>
