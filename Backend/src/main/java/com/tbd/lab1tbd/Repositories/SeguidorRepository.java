@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -194,6 +195,13 @@ public class SeguidorRepository {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("idUsuario", idUsuario);
 
-        return jdbc.queryForMap(sql, params);
+        Map<String, Object> result = jdbc.queryForMap(sql, params);
+
+        // Convertir a Map<String, Integer>
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("seguidores", ((Number) result.get("seguidores")).intValue());
+        stats.put("siguiendo", ((Number) result.get("siguiendo")).intValue());
+
+        return stats;
     }
 }
