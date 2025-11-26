@@ -89,4 +89,25 @@ public class SitioTuristicoController {
     public List<SitioTuristico> getByTipo(@RequestParam String tipo) {
         return service.getByTipo(tipo);
     }
+
+    /**
+     * GET /api/sitios/cercanos?lat={lat}&lng={lng}&radio={metros}
+     * Busca sitios turísticos cercanos a una ubicación específica.
+     * Utiliza el procedimiento almacenado de PostGIS para búsqueda geoespacial.
+     * Requiere autenticación JWT.
+     *
+     * @param lat Latitud de la ubicación de referencia
+     * @param lng Longitud de la ubicación de referencia
+     * @param radio Radio de búsqueda en metros (opcional, por defecto 1000m)
+     * @return Lista de sitios turísticos dentro del radio especificado
+     *
+     * Ejemplo: GET /api/sitios/cercanos?lat=-33.4489&lng=-70.6693&radio=2000
+     */
+    @GetMapping("/cercanos")
+    public List<SitioTuristico> getCercanos(
+            @RequestParam Double lat,
+            @RequestParam Double lng,
+            @RequestParam(required = false, defaultValue = "1000") Integer radio) {
+        return service.getCercanos(lng, lat, radio);
+    }
 }

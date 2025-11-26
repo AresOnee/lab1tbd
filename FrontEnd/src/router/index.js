@@ -22,6 +22,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/sitios/cercanos',
+      name: 'nearby-sites',
+      component: () => import('@/views/NearbySitesView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/sitios/crear',
       name: 'site-create',
       component: () => import('@/views/SiteFormView.vue'),
@@ -46,6 +52,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/perfil/:id/seguidores',
+      name: 'followers',
+      component: () => import('@/views/FollowersView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/mis-listas',
       name: 'lists',
       component: () => import('@/views/ListsView.vue'),
@@ -55,6 +67,12 @@ const router = createRouter({
       path: '/mis-listas/:id',
       name: 'list-detail',
       component: () => import('@/views/ListDetailView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/estadisticas',
+      name: 'statistics',
+      component: () => import('@/views/StatisticsView.vue'),
       meta: { requiresAuth: true }
     }
   ]

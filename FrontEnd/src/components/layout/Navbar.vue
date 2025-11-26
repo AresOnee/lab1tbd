@@ -12,8 +12,14 @@
           <router-link v-if="isAuthenticated" to="/sitios" class="navbar-item">
             Explorar Sitios
           </router-link>
+          <router-link v-if="isAuthenticated" to="/sitios/cercanos" class="navbar-item">
+            🗺️ Buscar Cercanos
+          </router-link>
           <router-link v-if="isAuthenticated" to="/mis-listas" class="navbar-item">
             Mis Listas
+          </router-link>
+          <router-link v-if="isAuthenticated" to="/estadisticas" class="navbar-item">
+            📊 Estadísticas
           </router-link>
         </div>
 
