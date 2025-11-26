@@ -88,7 +88,7 @@ const handleSubmit = async () => {
 
   try {
     await usersService.updateProfile(props.user.id, {
-      nombre: formData.nombre,
+      name: formData.nombre,
       biografia: formData.biografia
     })
 
