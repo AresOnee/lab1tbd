@@ -39,7 +39,7 @@ public class UserRepository {
                 RETURNING id
                 """;
         MapSqlParameterSource p = new MapSqlParameterSource()
-                .addValue("nombre", u.getNombre())
+                .addValue("nombre", u.getName())
                 .addValue("email", u.getEmail())
                 .addValue("contrasena_hash", u.getPassword());
         return jdbc.queryForObject(sql, p, Long.class);
@@ -73,7 +73,7 @@ public class UserRepository {
                 """;
         MapSqlParameterSource p = new MapSqlParameterSource()
                 .addValue("id", id)
-                .addValue("nombre", u.getNombre())
+                .addValue("nombre", u.getName())
                 .addValue("biografia", u.getBiografia());
         return jdbc.update(sql, p);
     }

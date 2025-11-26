@@ -25,7 +25,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         // Creamos el UserEntity (POJO)
         UserEntity user = new UserEntity();
-        user.setNombre(request.getNombre());
+        user.setName(request.getNombre());
         user.setEmail(request.getEmail());
         
         // ¡IMPORTANTE! Hasheamos la contraseña antes de guardarla
@@ -46,7 +46,7 @@ public class AuthenticationService {
         // Creamos el DTO del usuario (sin información sensible)
         UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
-                .nombre(user.getNombre())
+                .nombre(user.getName())
                 .email(user.getEmail())
                 .biografia(user.getBiografia())
                 .build();
@@ -85,7 +85,7 @@ public class AuthenticationService {
         // Creamos el DTO del usuario (sin información sensible)
         UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
-                .nombre(user.getNombre())
+                .nombre(user.getName())
                 .email(user.getEmail())
                 .biografia(user.getBiografia())
                 .build();
