@@ -59,16 +59,13 @@
             </div>
 
             <div v-if="reviews.length > 0" class="reviews-list">
-              <div v-for="review in reviews" :key="review.id" class="review-card">
-                <div class="review-header">
-                  <div>
-                    <strong>{{ review.usuarioNombre }}</strong>
-                    <RatingStars :rating="review.calificacion" :show-value="false" />
-                  </div>
-                  <span class="review-date">{{ formatDate(review.fecha) }}</span>
-                </div>
-                <p class="review-content">{{ review.contenido }}</p>
-              </div>
+              <ReviewCard
+                v-for="review in reviews"
+                :key="review.id"
+                :review="review"
+                @edit="handleEditReview"
+                @delete="handleDeleteReview"
+              />
             </div>
             <p v-else class="no-content">No hay reseñas aún. Sé el primero en dejar una.</p>
           </section>
@@ -100,6 +97,13 @@
       @created="onReviewCreated"
     />
 
+    <ReviewEditForm
+      v-if="showEditReview"
+      :review="editingReview"
+      @close="showEditReview = false"
+      @updated="onReviewUpdated"
+    />
+
     <PhotoUpload
       v-if="showUploadPhoto"
       :site-id="siteId"
@@ -120,6 +124,8 @@ import Navbar from '@/components/layout/Navbar.vue'
 import RatingStars from '@/components/common/RatingStars.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import ReviewForm from '@/components/reviews/ReviewForm.vue'
+import ReviewEditForm from '@/components/reviews/ReviewEditForm.vue'
+import ReviewCard from '@/components/reviews/ReviewCard.vue'
 import PhotoUpload from '@/components/photos/PhotoUpload.vue'
 
 const route = useRoute()
@@ -136,7 +142,9 @@ const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const loading = ref(false)
 const showCreateReview = ref(false)
+const showEditReview = ref(false)
 const showUploadPhoto = ref(false)
+const editingReview = ref(null)
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -151,8 +159,27 @@ const addToList = () => {
   alert('Funcionalidad de agregar a lista próximamente')
 }
 
+const handleEditReview = (review) => {
+  editingReview.value = review
+  showEditReview.value = true
+}
+
+const handleDeleteReview = async (reviewId) => {
+  try {
+    await reviewsStore.deleteReview(reviewId)
+    await reviewsStore.fetchBySiteId(siteId.value)
+  } catch (error) {
+    alert('Error al eliminar la reseña')
+  }
+}
+
 const onReviewCreated = async () => {
   showCreateReview.value = false
+  await reviewsStore.fetchBySiteId(siteId.value)
+}
+
+const onReviewUpdated = async () => {
+  showEditReview.value = false
   await reviewsStore.fetchBySiteId(siteId.value)
 }
 
@@ -309,30 +336,6 @@ section h2 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.review-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 1rem;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.review-date {
-  color: #95a5a6;
-  font-size: 0.85rem;
-}
-
-.review-content {
-  color: #34495e;
-  margin: 0;
-  line-height: 1.6;
 }
 
 .no-content {

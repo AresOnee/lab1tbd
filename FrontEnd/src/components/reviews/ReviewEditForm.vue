@@ -2,7 +2,7 @@
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Escribir Reseña</h2>
+        <h2>Editar Reseña</h2>
         <button @click="$emit('close')" class="btn-close">✕</button>
       </div>
 
@@ -34,7 +34,7 @@
             Cancelar
           </button>
           <button type="submit" class="btn-submit" :disabled="loading">
-            {{ loading ? 'Guardando...' : 'Publicar Reseña' }}
+            {{ loading ? 'Guardando...' : 'Actualizar Reseña' }}
           </button>
         </div>
       </form>
@@ -45,25 +45,23 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useReviewsStore } from '@/stores/reviews'
-import { useAuthStore } from '@/stores/auth'
 import RatingStars from '@/components/common/RatingStars.vue'
 import ErrorMessage from '@/components/common/ErrorMessage.vue'
 
 const props = defineProps({
-  siteId: {
-    type: [String, Number],
+  review: {
+    type: Object,
     required: true
   }
 })
 
-const emit = defineEmits(['close', 'created'])
+const emit = defineEmits(['close', 'updated'])
 
 const reviewsStore = useReviewsStore()
-const authStore = useAuthStore()
 
 const formData = reactive({
-  calificacion: 5,
-  contenido: ''
+  calificacion: props.review.calificacion,
+  contenido: props.review.contenido
 })
 
 const loading = ref(false)
@@ -74,15 +72,14 @@ const handleSubmit = async () => {
   loading.value = true
 
   try {
-    await reviewsStore.createReview({
-      sitioId: props.siteId,
+    await reviewsStore.updateReview(props.review.id, {
       calificacion: formData.calificacion,
       contenido: formData.contenido
     })
-    emit('created')
+    emit('updated')
     emit('close')
   } catch (err) {
-    error.value = reviewsStore.error || 'Error al crear la reseña'
+    error.value = reviewsStore.error || 'Error al actualizar la reseña'
   } finally {
     loading.value = false
   }
@@ -207,12 +204,12 @@ const handleSubmit = async () => {
 }
 
 .btn-submit {
-  background-color: #27ae60;
+  background-color: #f39c12;
   color: white;
 }
 
 .btn-submit:hover:not(:disabled) {
-  background-color: #229954;
+  background-color: #e67e22;
 }
 
 .btn-submit:disabled {
