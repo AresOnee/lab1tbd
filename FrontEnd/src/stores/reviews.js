@@ -55,12 +55,9 @@ export const useReviewsStore = defineStore('reviews', () => {
     loading.value = true
     error.value = null
     try {
-      const updatedReview = await reviewsService.update(id, reviewData)
-      const index = reviews.value.findIndex(r => r.id === id)
-      if (index !== -1) {
-        reviews.value[index] = updatedReview
-      }
-      return updatedReview
+      await reviewsService.update(id, reviewData)
+      // El backend devuelve 204 No Content (sin body)
+      // La lista se recarga desde el componente con fetchBySiteId
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al actualizar reseña'
       throw err
