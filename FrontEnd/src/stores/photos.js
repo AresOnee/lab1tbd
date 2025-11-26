@@ -39,9 +39,10 @@ export const usePhotosStore = defineStore('photos', () => {
     loading.value = true
     error.value = null
     try {
-      const newPhoto = await photosService.upload(photoData)
-      photos.value.unshift(newPhoto)
-      return newPhoto
+      const newPhotoId = await photosService.upload(photoData)
+      // El backend devuelve solo el ID, no el objeto completo
+      // La lista se recarga desde el componente con fetchBySiteId
+      return newPhotoId
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al subir fotografía'
       throw err
