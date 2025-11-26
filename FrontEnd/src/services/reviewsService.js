@@ -23,12 +23,12 @@ export const reviewsService = {
   },
 
   async update(id, reviewData) {
-    const response = await api.put(`/resenas/${id}`, reviewData)
+    const response = await api.put(`/reseñas/${id}`, reviewData)
     return response.data
   },
 
   async delete(id) {
-    const response = await api.delete(`/resenas/${id}`)
+    const response = await api.delete(`/reseñas/${id}`)
     return response.data
   }
 }
