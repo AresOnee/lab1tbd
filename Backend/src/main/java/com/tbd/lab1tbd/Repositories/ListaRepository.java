@@ -23,13 +23,14 @@ public class ListaRepository {
 
     private final NamedParameterJdbcTemplate jdbc;
 
-    // RowMapper para la respuesta (incluyendo nombre de usuario)
+    // RowMapper para la respuesta (incluyendo nombre de usuario y total de sitios)
     private static final RowMapper<ListaResponse> RESPONSE_MAPPER = (rs, rowNum) -> new ListaResponse(
             rs.getLong("id_lista"),
             rs.getLong("id_usuario"),
             rs.getString("nombre_usuario"),
             rs.getString("nombre_lista"),
-            rs.getTimestamp("fecha_creacion")
+            rs.getTimestamp("fecha_creacion"),
+            rs.getInt("total_sitios")
     );
     
     // RowMapper para el POJO de SitioTuristico (reutilizado de SitioTuristicoRepository)
@@ -53,10 +54,15 @@ public class ListaRepository {
     }
 
     public List<ListaResponse> findByUsuarioId(Long idUsuario) {
-        String sql = "SELECT l.id AS id_lista, l.nombre AS nombre_lista, l.fecha_creacion, u.id AS id_usuario, u.nombre AS nombre_usuario " +
+        String sql = "SELECT l.id AS id_lista, l.nombre AS nombre_lista, l.fecha_creacion, " +
+                     "u.id AS id_usuario, u.nombre AS nombre_usuario, " +
+                     "COALESCE(COUNT(ls.id_sitio), 0) AS total_sitios " +
                      "FROM listas_personalizadas l " +
                      "JOIN usuarios u ON l.id_usuario = u.id " +
-                     "WHERE l.id_usuario = :idUsuario ORDER BY l.fecha_creacion DESC";
+                     "LEFT JOIN lista_sitios ls ON l.id = ls.id_lista " +
+                     "WHERE l.id_usuario = :idUsuario " +
+                     "GROUP BY l.id, l.nombre, l.fecha_creacion, u.id, u.nombre " +
+                     "ORDER BY l.fecha_creacion DESC";
         return jdbc.query(sql, Map.of("idUsuario", idUsuario), RESPONSE_MAPPER);
     }
 
