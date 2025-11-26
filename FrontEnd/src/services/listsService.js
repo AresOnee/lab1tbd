@@ -11,6 +11,11 @@ export const listsService = {
     return response.data
   },
 
+  async getSites(listId) {
+    const response = await api.get(`/listas/${listId}/sitios`)
+    return response.data
+  },
+
   async getByUserId(userId) {
     const response = await api.get(`/listas/usuario/${userId}`)
     return response.data

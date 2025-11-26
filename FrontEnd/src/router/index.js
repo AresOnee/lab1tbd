@@ -50,6 +50,12 @@ const router = createRouter({
       name: 'lists',
       component: () => import('@/views/ListsView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/mis-listas/:id',
+      name: 'list-detail',
+      component: () => import('@/views/ListDetailView.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
