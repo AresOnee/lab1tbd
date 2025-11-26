@@ -18,6 +18,9 @@
           <router-link v-if="isAuthenticated" to="/mis-listas" class="navbar-item">
             Mis Listas
           </router-link>
+          <router-link v-if="isAuthenticated" to="/estadisticas" class="navbar-item">
+            📊 Estadísticas
+          </router-link>
         </div>
 
         <div class="navbar-end">

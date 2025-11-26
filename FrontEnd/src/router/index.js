@@ -68,6 +68,12 @@ const router = createRouter({
       name: 'list-detail',
       component: () => import('@/views/ListDetailView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/estadisticas',
+      name: 'statistics',
+      component: () => import('@/views/StatisticsView.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
