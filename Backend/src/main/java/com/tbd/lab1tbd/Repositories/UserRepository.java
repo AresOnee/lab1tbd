@@ -53,6 +53,11 @@ public class UserRepository {
             return Optional.empty();
         }
     }
+
+    // Alias para compatibilidad
+    public Optional<UserEntity> findById(Long id) {
+        return getbyid(id);
+    }
     
     // ... (El método getByEmail será necesario para el Login) ...
     public Optional<UserEntity> getByEmail(String email) {

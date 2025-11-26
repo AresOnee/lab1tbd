@@ -3,6 +3,8 @@ package com.tbd.lab1tbd.Controllers;
 import com.tbd.lab1tbd.Config.JwtService;
 import com.tbd.lab1tbd.Dto.EstadisticasSeguidoresResponse;
 import com.tbd.lab1tbd.Dto.UsuarioSeguidorResponse;
+import com.tbd.lab1tbd.Entities.UserEntity;
+import com.tbd.lab1tbd.Repositories.UserRepository;
 import com.tbd.lab1tbd.Services.SeguidorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class SeguidorController {
 
     private final SeguidorService seguidorService;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     /**
      * Extrae el ID del usuario autenticado desde el token JWT.
@@ -31,7 +34,12 @@ public class SeguidorController {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             String email = jwtService.extractUsername(token);
-            return jwtService.extractUserId(token);
+
+            // Buscar el usuario por email y obtener su ID
+            UserEntity usuario = userRepository.getByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            return usuario.getId();
         }
         throw new RuntimeException("Token de autenticación no encontrado");
     }
