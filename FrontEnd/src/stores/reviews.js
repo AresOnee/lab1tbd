@@ -39,9 +39,10 @@ export const useReviewsStore = defineStore('reviews', () => {
     loading.value = true
     error.value = null
     try {
-      const newReview = await reviewsService.create(reviewData)
-      reviews.value.unshift(newReview)
-      return newReview
+      const newReviewId = await reviewsService.create(reviewData)
+      // El backend devuelve solo el ID, no el objeto completo
+      // La lista se recarga desde el componente con fetchBySiteId
+      return newReviewId
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al crear reseña'
       throw err
