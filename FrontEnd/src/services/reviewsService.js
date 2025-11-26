@@ -7,7 +7,7 @@ export const reviewsService = {
   },
 
   async getBySiteId(siteId) {
-    const response = await api.get(`/resenas/sitio/${siteId}`)
+    const response = await api.get(`/sitios/${siteId}/reseñas`)
     return response.data
   },
 
@@ -17,7 +17,8 @@ export const reviewsService = {
   },
 
   async create(reviewData) {
-    const response = await api.post('/resenas', reviewData)
+    const { sitioId, ...data } = reviewData
+    const response = await api.post(`/sitios/${sitioId}/reseñas`, data)
     return response.data
   },
 

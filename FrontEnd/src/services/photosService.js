@@ -7,7 +7,7 @@ export const photosService = {
   },
 
   async getBySiteId(siteId) {
-    const response = await api.get(`/fotografias/sitio/${siteId}`)
+    const response = await api.get(`/sitios/${siteId}/fotografias`)
     return response.data
   },
 
@@ -17,7 +17,8 @@ export const photosService = {
   },
 
   async upload(photoData) {
-    const response = await api.post('/fotografias', photoData)
+    const { sitioId, ...data } = photoData
+    const response = await api.post(`/sitios/${sitioId}/fotografias`, data)
     return response.data
   },
 
