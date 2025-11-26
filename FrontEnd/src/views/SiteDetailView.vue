@@ -15,6 +15,20 @@
         </div>
         <div class="site-actions">
           <button @click="addToList" class="btn-action">+ Agregar a lista</button>
+          <button
+            v-if="isAuthenticated"
+            @click="editSite"
+            class="btn-edit"
+          >
+            ✏️ Editar
+          </button>
+          <button
+            v-if="isAuthenticated"
+            @click="deleteSite"
+            class="btn-delete"
+          >
+            🗑️ Eliminar
+          </button>
         </div>
       </div>
 
@@ -121,7 +135,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useSitesStore } from '@/stores/sites'
 import { useReviewsStore } from '@/stores/reviews'
 import { usePhotosStore } from '@/stores/photos'
@@ -137,6 +151,7 @@ import PhotoCard from '@/components/photos/PhotoCard.vue'
 import AddToListModal from '@/components/lists/AddToListModal.vue'
 
 const route = useRoute()
+const router = useRouter()
 const sitesStore = useSitesStore()
 const reviewsStore = useReviewsStore()
 const photosStore = usePhotosStore()
@@ -170,6 +185,24 @@ const addToList = () => {
     return
   }
   showAddToList.value = true
+}
+
+const editSite = () => {
+  router.push(`/sitios/${siteId.value}/editar`)
+}
+
+const deleteSite = async () => {
+  if (!confirm('¿Estás seguro de eliminar este sitio? Esta acción no se puede deshacer y eliminará también todas sus reseñas y fotos.')) {
+    return
+  }
+
+  try {
+    await sitesStore.deleteSite(siteId.value)
+    alert('Sitio eliminado exitosamente')
+    router.push('/sitios')
+  } catch (error) {
+    alert('Error al eliminar el sitio')
+  }
 }
 
 const handleEditReview = (review) => {
@@ -284,6 +317,36 @@ onMounted(async () => {
 
 .btn-action:hover {
   background-color: #2980b9;
+}
+
+.btn-edit {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+  background-color: #e67e22;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
 }
 
 .site-content {
