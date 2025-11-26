@@ -77,9 +77,12 @@
         <aside class="sidebar">
           <div class="info-card">
             <h3>Ubicación</h3>
-            <p v-if="site.coordenadas">
-              Lat: {{ site.coordenadas.lat }}<br />
-              Lng: {{ site.coordenadas.lng }}
+            <p v-if="site.latitud && site.longitud" class="coordinates">
+              <strong>Latitud:</strong> {{ site.latitud }}<br />
+              <strong>Longitud:</strong> {{ site.longitud }}
+            </p>
+            <p v-else class="no-coordinates">
+              Coordenadas no disponibles
             </p>
             <div class="map-preview">
               <p>Vista previa del mapa</p>
@@ -353,6 +356,18 @@ section h2 {
 .info-card h3 {
   margin: 0 0 1rem 0;
   color: #2c3e50;
+}
+
+.coordinates {
+  color: #2c3e50;
+  line-height: 1.8;
+  margin: 0 0 1rem 0;
+}
+
+.no-coordinates {
+  color: #95a5a6;
+  font-style: italic;
+  margin: 0 0 1rem 0;
 }
 
 .map-preview {
