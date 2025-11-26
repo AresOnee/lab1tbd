@@ -52,6 +52,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/perfil/:id/seguidores',
+      name: 'followers',
+      component: () => import('@/views/FollowersView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/mis-listas',
       name: 'lists',
       component: () => import('@/views/ListsView.vue'),

@@ -34,6 +34,14 @@
             <div class="stat-number">{{ stats.totalListas }}</div>
             <div class="stat-label">Listas</div>
           </div>
+          <div class="stat-card clickable" @click="viewFollowers">
+            <div class="stat-number">{{ followersStats.totalSeguidores || 0 }}</div>
+            <div class="stat-label">Seguidores</div>
+          </div>
+          <div class="stat-card clickable" @click="viewFollowing">
+            <div class="stat-number">{{ followersStats.totalSiguiendo || 0 }}</div>
+            <div class="stat-label">Siguiendo</div>
+          </div>
         </div>
 
         <div class="tabs">
@@ -100,15 +108,18 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useReviewsStore } from '@/stores/reviews'
 import { usePhotosStore } from '@/stores/photos'
 import { useListsStore } from '@/stores/lists'
+import { followersService } from '@/services/followersService'
 import Navbar from '@/components/layout/Navbar.vue'
 import RatingStars from '@/components/common/RatingStars.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import ProfileEditForm from '@/components/profile/ProfileEditForm.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const reviewsStore = useReviewsStore()
 const photosStore = usePhotosStore()
@@ -126,6 +137,11 @@ const stats = ref({
   totalResenas: 0,
   totalFotos: 0,
   totalListas: 0
+})
+
+const followersStats = ref({
+  totalSeguidores: 0,
+  totalSiguiendo: 0
 })
 
 const tabs = [
@@ -152,6 +168,14 @@ const onProfileUpdated = () => {
   // El perfil ya está actualizado en authStore por ProfileEditForm
 }
 
+const viewFollowers = () => {
+  router.push(`/perfil/${user.value.id}/seguidores?mode=followers`)
+}
+
+const viewFollowing = () => {
+  router.push(`/perfil/${user.value.id}/seguidores?mode=following`)
+}
+
 onMounted(async () => {
   loading.value = true
   try {
@@ -159,7 +183,10 @@ onMounted(async () => {
     await Promise.all([
       reviewsStore.fetchByUserId(userId),
       photosStore.fetchByUserId(userId),
-      listsStore.fetchByUserId(userId)
+      listsStore.fetchByUserId(userId),
+      followersService.getStats(userId).then(data => {
+        followersStats.value = data
+      })
     ])
 
     stats.value = {
@@ -250,7 +277,7 @@ onMounted(async () => {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -260,6 +287,17 @@ onMounted(async () => {
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card.clickable {
+  cursor: pointer;
+}
+
+.stat-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #f8f9fa;
 }
 
 .stat-number {
