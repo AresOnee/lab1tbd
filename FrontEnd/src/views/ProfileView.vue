@@ -14,7 +14,11 @@
             <h1>{{ user?.nombre }}</h1>
             <p class="profile-email">{{ user?.email }}</p>
             <p v-if="user?.biografia" class="profile-bio">{{ user.biografia }}</p>
+            <p v-else class="profile-bio-empty">Sin biografía</p>
           </div>
+          <button @click="showEditProfile = true" class="btn-edit-profile">
+            ✏️ Editar Perfil
+          </button>
         </div>
 
         <div class="stats-grid">
@@ -84,6 +88,13 @@
         </div>
       </div>
     </div>
+
+    <ProfileEditForm
+      v-if="showEditProfile"
+      :user="user"
+      @close="showEditProfile = false"
+      @updated="onProfileUpdated"
+    />
   </div>
 </template>
 
@@ -96,6 +107,7 @@ import { useListsStore } from '@/stores/lists'
 import Navbar from '@/components/layout/Navbar.vue'
 import RatingStars from '@/components/common/RatingStars.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import ProfileEditForm from '@/components/profile/ProfileEditForm.vue'
 
 const authStore = useAuthStore()
 const reviewsStore = useReviewsStore()
@@ -108,6 +120,7 @@ const photos = computed(() => photosStore.photos)
 
 const loading = ref(false)
 const activeTab = ref('reviews')
+const showEditProfile = ref(false)
 
 const stats = ref({
   totalResenas: 0,
@@ -132,6 +145,11 @@ const formatDate = (dateString) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+const onProfileUpdated = () => {
+  showEditProfile.value = false
+  // El perfil ya está actualizado en authStore por ProfileEditForm
 }
 
 onMounted(async () => {
@@ -204,6 +222,30 @@ onMounted(async () => {
 .profile-bio {
   color: #34495e;
   margin: 0;
+}
+
+.profile-bio-empty {
+  color: #95a5a6;
+  font-style: italic;
+  margin: 0;
+}
+
+.btn-edit-profile {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.btn-edit-profile:hover {
+  background-color: #2980b9;
 }
 
 .stats-grid {

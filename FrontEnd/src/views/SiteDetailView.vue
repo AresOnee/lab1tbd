@@ -23,12 +23,11 @@
           <section class="photos-section">
             <h2>Fotografías</h2>
             <div v-if="photos.length > 0" class="photos-grid">
-              <img
+              <PhotoCard
                 v-for="photo in photos"
                 :key="photo.id"
-                :src="photo.url"
-                :alt="site.nombre"
-                class="photo"
+                :photo="photo"
+                @delete="handleDeletePhoto"
               />
             </div>
             <p v-else class="no-content">No hay fotografías aún.</p>
@@ -127,6 +126,7 @@ import ReviewForm from '@/components/reviews/ReviewForm.vue'
 import ReviewEditForm from '@/components/reviews/ReviewEditForm.vue'
 import ReviewCard from '@/components/reviews/ReviewCard.vue'
 import PhotoUpload from '@/components/photos/PhotoUpload.vue'
+import PhotoCard from '@/components/photos/PhotoCard.vue'
 
 const route = useRoute()
 const sitesStore = useSitesStore()
@@ -170,6 +170,15 @@ const handleDeleteReview = async (reviewId) => {
     await reviewsStore.fetchBySiteId(siteId.value)
   } catch (error) {
     alert('Error al eliminar la reseña')
+  }
+}
+
+const handleDeletePhoto = async (photoId) => {
+  try {
+    await photosStore.deletePhoto(photoId)
+    await photosStore.fetchBySiteId(siteId.value)
+  } catch (error) {
+    alert('Error al eliminar la fotografía')
   }
 }
 
@@ -289,16 +298,9 @@ section h2 {
 
 .photos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 1rem;
-}
-
-.photo {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 6px;
 }
 
 .btn-primary,
