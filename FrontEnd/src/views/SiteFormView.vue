@@ -127,10 +127,8 @@ const handleSubmit = async () => {
       nombre: formData.nombre,
       tipo: formData.tipo,
       descripcion: formData.descripcion,
-      coordenadas: {
-        lat: formData.latitud,
-        lng: formData.longitud
-      }
+      latitud: formData.latitud,
+      longitud: formData.longitud
     }
 
     if (isEdit.value) {
@@ -158,8 +156,8 @@ onMounted(async () => {
       formData.nombre = site.nombre
       formData.tipo = site.tipo
       formData.descripcion = site.descripcion
-      formData.latitud = site.coordenadas?.lat
-      formData.longitud = site.coordenadas?.lng
+      formData.latitud = site.latitud
+      formData.longitud = site.longitud
     } catch (err) {
       error.value = 'Error al cargar el sitio'
     }
