@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserEntity {
     private Long id;
-    private String name;
+    private String nombre;
     private String email;
     private String password;
     private String biografia;
