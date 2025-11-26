@@ -109,6 +109,13 @@
       @close="showUploadPhoto = false"
       @uploaded="onPhotoUploaded"
     />
+
+    <AddToListModal
+      v-if="showAddToList"
+      :site-id="siteId"
+      @close="showAddToList = false"
+      @added="showAddToList = false"
+    />
   </div>
 </template>
 
@@ -127,6 +134,7 @@ import ReviewEditForm from '@/components/reviews/ReviewEditForm.vue'
 import ReviewCard from '@/components/reviews/ReviewCard.vue'
 import PhotoUpload from '@/components/photos/PhotoUpload.vue'
 import PhotoCard from '@/components/photos/PhotoCard.vue'
+import AddToListModal from '@/components/lists/AddToListModal.vue'
 
 const route = useRoute()
 const sitesStore = useSitesStore()
@@ -144,6 +152,7 @@ const loading = ref(false)
 const showCreateReview = ref(false)
 const showEditReview = ref(false)
 const showUploadPhoto = ref(false)
+const showAddToList = ref(false)
 const editingReview = ref(null)
 
 const formatDate = (dateString) => {
@@ -156,7 +165,11 @@ const formatDate = (dateString) => {
 }
 
 const addToList = () => {
-  alert('Funcionalidad de agregar a lista próximamente')
+  if (!isAuthenticated.value) {
+    alert('Debes iniciar sesión para agregar sitios a listas')
+    return
+  }
+  showAddToList.value = true
 }
 
 const handleEditReview = (review) => {
