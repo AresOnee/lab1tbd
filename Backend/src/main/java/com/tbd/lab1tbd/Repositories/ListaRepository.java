@@ -54,14 +54,15 @@ public class ListaRepository {
     }
 
     public List<ListaResponse> findByUsuarioId(Long idUsuario) {
-        String sql = "SELECT l.id AS id_lista, l.nombre AS nombre_lista, l.fecha_creacion, " +
-                     "u.id AS id_usuario, u.nombre AS nombre_usuario, " +
-                     "COALESCE(COUNT(ls.id_sitio), 0) AS total_sitios " +
+        String sql = "SELECT l.id AS id_lista, " +
+                     "l.nombre AS nombre_lista, " +
+                     "l.fecha_creacion, " +
+                     "u.id AS id_usuario, " +
+                     "u.nombre AS nombre_usuario, " +
+                     "(SELECT COUNT(*) FROM lista_sitios ls WHERE ls.id_lista = l.id) AS total_sitios " +
                      "FROM listas_personalizadas l " +
                      "JOIN usuarios u ON l.id_usuario = u.id " +
-                     "LEFT JOIN lista_sitios ls ON l.id = ls.id_lista " +
                      "WHERE l.id_usuario = :idUsuario " +
-                     "GROUP BY l.id, l.nombre, l.fecha_creacion, u.id, u.nombre " +
                      "ORDER BY l.fecha_creacion DESC";
         return jdbc.query(sql, Map.of("idUsuario", idUsuario), RESPONSE_MAPPER);
     }
