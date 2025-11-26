@@ -32,7 +32,7 @@ export const listsService = {
   },
 
   async addSite(listId, siteId) {
-    const response = await api.post(`/listas/${listId}/sitios`, { sitioId: siteId })
+    const response = await api.post(`/listas/${listId}/sitios/${siteId}`)
     return response.data
   },
 
