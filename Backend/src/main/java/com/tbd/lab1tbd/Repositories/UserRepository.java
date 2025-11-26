@@ -67,14 +67,14 @@ public class UserRepository {
     public int update(Long id, UserEntity u) {
         String sql = """
                 UPDATE usuarios
-                   SET nombre=:nombre, email=:email
-                   -- Generalmente, la contraseña se actualiza en un endpoint separado
+                   SET nombre=:nombre, biografia=:biografia
+                   -- Email y contraseña no se actualizan aquí
                 WHERE id=:id
                 """;
         MapSqlParameterSource p = new MapSqlParameterSource()
                 .addValue("id", id)
                 .addValue("nombre", u.getName())
-                .addValue("email", u.getEmail());
+                .addValue("biografia", u.getBiografia());
         return jdbc.update(sql, p);
     }
 

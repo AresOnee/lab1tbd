@@ -4,6 +4,7 @@ import com.tbd.lab1tbd.Entities.UserEntity;
 import com.tbd.lab1tbd.Services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,10 +20,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UserEntity user) {
-        // (Aquí faltaría lógica para asegurar que el usuario autenticado
-        // solo pueda modificarse a sí mismo)
-        service.update(id, user);
+    public ResponseEntity<Void> update(
+            @PathVariable Long id,
+            @RequestBody UserEntity user,
+            Authentication authentication
+    ) {
+        String userEmail = authentication.getName();
+        service.update(id, user, userEmail);
         return ResponseEntity.noContent().build();
     }
 
