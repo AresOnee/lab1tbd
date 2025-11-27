@@ -217,12 +217,12 @@ public class EstadisticasRepository {
      * (Vista Materializada)
      */
     public List<ResumenContribucionesResponse> obtenerResumenContribuciones() {
-        String sql = "SELECT * FROM resumen_contribuciones_usuario ORDER BY total_reseñas DESC";
+        String sql = "SELECT * FROM resumen_contribuciones_usuario ORDER BY total_resenas DESC";
 
         return jdbc.query(sql, (rs, rowNum) -> new ResumenContribucionesResponse(
                 rs.getLong("id_usuario"),
                 rs.getString("nombre"),
-                rs.getInt("total_reseñas"),
+                rs.getInt("total_resenas"),
                 rs.getInt("total_fotos"),
                 rs.getInt("total_listas")
         ));
