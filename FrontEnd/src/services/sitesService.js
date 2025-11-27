@@ -33,7 +33,7 @@ export const sitesService = {
 
   async searchNearby(lat, lng, radius) {
     const response = await api.get('/sitios/cercanos', {
-      params: { lat, lng, radius }
+      params: { lat, lng, radio: radius }
     })
     return response.data
   },
