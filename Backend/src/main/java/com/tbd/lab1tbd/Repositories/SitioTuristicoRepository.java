@@ -154,8 +154,18 @@ public class SitioTuristicoRepository {
      * @return Lista de sitios turísticos dentro del radio especificado
      */
     public List<SitioTuristico> findCercanos(Double longitud, Double latitud, Integer radioMetros) {
-        String sql = "SELECT " + SELECT_COLUMNS +
-                     "FROM buscar_sitios_cercanos(:longitud, :latitud, :radio)";
+        String sql = """
+                SELECT
+                    s.id,
+                    s.nombre,
+                    s.descripcion,
+                    s.tipo,
+                    s.calificacion_promedio,
+                    s.total_resenas,
+                    ST_Y(s.coordenadas::geometry) AS latitud,
+                    ST_X(s.coordenadas::geometry) AS longitud
+                FROM buscar_sitios_cercanos(:longitud, :latitud, :radio) s
+                """;
 
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("longitud", longitud)

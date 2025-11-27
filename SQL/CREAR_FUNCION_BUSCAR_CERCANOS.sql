@@ -1,61 +1,25 @@
 -- =============================================
 -- Crear/Recrear función buscar_sitios_cercanos
+-- NOTA: La función original ya existe y funciona bien.
+-- Este script NO debe ejecutarse a menos que quieras sobrescribirla.
 -- =============================================
 
--- Eliminar la función si existe
-DROP FUNCTION IF EXISTS buscar_sitios_cercanos(double precision, double precision, integer);
+-- COMENTADO: No eliminar la función original que ya funciona
+-- DROP FUNCTION IF EXISTS buscar_sitios_cercanos(double precision, double precision, integer);
 
--- Crear la función
-CREATE OR REPLACE FUNCTION buscar_sitios_cercanos(
-    p_longitud DOUBLE PRECISION,
-    p_latitud DOUBLE PRECISION,
-    p_radio_metros INTEGER
-)
-RETURNS TABLE (
-    id INT,
-    nombre VARCHAR,
-    descripcion TEXT,
-    tipo VARCHAR,
-    direccion VARCHAR,
-    latitud DOUBLE PRECISION,
-    longitud DOUBLE PRECISION,
-    calificacion_promedio DOUBLE PRECISION,
-    total_resenas INT,
-    distancia_metros DOUBLE PRECISION
-) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        s.id,
-        s.nombre,
-        s.descripcion,
-        s.tipo,
-        s.direccion,
-        ST_Y(s.coordenadas) AS latitud,
-        ST_X(s.coordenadas) AS longitud,
-        s.calificacion_promedio,
-        s.total_resenas,
-        ST_Distance(
-            ST_Transform(s.coordenadas, 3857),
-            ST_Transform(ST_SetSRID(ST_MakePoint(p_longitud, p_latitud), 4326), 3857)
-        ) AS distancia_metros
-    FROM
-        sitios_turisticos s
-    WHERE
-        s.coordenadas IS NOT NULL
-        AND ST_DWithin(
-            ST_Transform(s.coordenadas, 3857),
-            ST_Transform(ST_SetSRID(ST_MakePoint(p_longitud, p_latitud), 4326), 3857),
-            p_radio_metros
-        )
-    ORDER BY
-        distancia_metros ASC;
-END;
-$$ LANGUAGE plpgsql;
+-- Verificar que la función existe
+SELECT 'Verificando función existente:' AS mensaje;
+SELECT
+    p.proname AS funcion,
+    pg_get_function_arguments(p.oid) AS parametros
+FROM pg_proc p
+JOIN pg_namespace n ON p.pronamespace = n.oid
+WHERE p.proname = 'buscar_sitios_cercanos'
+  AND n.nspname = 'public';
 
--- Verificar que se creó correctamente
-SELECT 'Función creada exitosamente' AS mensaje;
-
--- Probar la función
-SELECT 'Probando con Santiago Centro (radio 5km):' AS prueba;
+-- Probar la función existente
+SELECT 'Probando función existente (Santiago Centro, 5km):' AS prueba;
 SELECT * FROM buscar_sitios_cercanos(-70.6693, -33.4489, 5000);
+
+SELECT 'Probando función existente (Santiago Centro, 10km):' AS prueba;
+SELECT * FROM buscar_sitios_cercanos(-70.6693, -33.4489, 10000);
