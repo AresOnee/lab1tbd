@@ -1,5 +1,7 @@
 <template>
   <div class="nearby-sites-view">
+    <Navbar />
+
     <div class="header">
       <h1>🗺️ Buscar Sitios Cercanos</h1>
       <p class="subtitle">Encuentra sitios turísticos cerca de una ubicación</p>
@@ -127,6 +129,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { sitesService } from '@/services/sitesService'
+import Navbar from '@/components/layout/Navbar.vue'
 import ErrorMessage from '@/components/common/ErrorMessage.vue'
 
 const router = useRouter()
