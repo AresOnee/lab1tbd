@@ -154,19 +154,23 @@ public class SitioTuristicoRepository {
      * @return Lista de sitios turísticos dentro del radio especificado
      */
     public List<SitioTuristico> findCercanos(Double longitud, Double latitud, Integer radioMetros) {
-        // Llamamos a la función y hacemos JOIN con la tabla para obtener las coordenadas
+        // Query directa usando ST_DWithin de PostGIS (no usa la función buscar_sitios_cercanos)
         String sql = """
                 SELECT
-                    resultado.id,
-                    resultado.nombre,
-                    resultado.descripcion,
-                    resultado.tipo,
-                    resultado.calificacion_promedio,
-                    resultado.total_resenas,
-                    ST_Y(st.coordenadas::geometry) AS latitud,
-                    ST_X(st.coordenadas::geometry) AS longitud
-                FROM buscar_sitios_cercanos(:longitud, :latitud, :radio) AS resultado
-                JOIN sitios_turisticos st ON st.id = resultado.id
+                    id,
+                    nombre,
+                    descripcion,
+                    tipo,
+                    calificacion_promedio,
+                    total_resenas,
+                    ST_Y(coordenadas::geometry) AS latitud,
+                    ST_X(coordenadas::geometry) AS longitud
+                FROM sitios_turisticos
+                WHERE ST_DWithin(
+                    coordenadas,
+                    ST_MakePoint(:longitud, :latitud)::geography,
+                    :radio
+                )
                 """;
 
         MapSqlParameterSource params = new MapSqlParameterSource()
