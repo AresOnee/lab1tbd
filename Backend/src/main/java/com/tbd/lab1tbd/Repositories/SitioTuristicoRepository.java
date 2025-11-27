@@ -154,21 +154,19 @@ public class SitioTuristicoRepository {
      * @return Lista de sitios turísticos dentro del radio especificado
      */
     public List<SitioTuristico> findCercanos(Double longitud, Double latitud, Integer radioMetros) {
-        // La función buscar_sitios_cercanos devuelve SETOF sitios_turisticos
-        // Usamos una subconsulta para obtener todos los campos y luego extraemos las coordenadas
+        // Llamamos a la función y hacemos JOIN con la tabla para obtener las coordenadas
         String sql = """
                 SELECT
-                    s.id,
-                    s.nombre,
-                    s.descripcion,
-                    s.tipo,
-                    s.calificacion_promedio,
-                    s.total_resenas,
-                    ST_Y(s.coordenadas::geometry) AS latitud,
-                    ST_X(s.coordenadas::geometry) AS longitud
-                FROM (
-                    SELECT * FROM buscar_sitios_cercanos(:longitud, :latitud, :radio)
-                ) AS s
+                    resultado.id,
+                    resultado.nombre,
+                    resultado.descripcion,
+                    resultado.tipo,
+                    resultado.calificacion_promedio,
+                    resultado.total_resenas,
+                    ST_Y(st.coordenadas::geometry) AS latitud,
+                    ST_X(st.coordenadas::geometry) AS longitud
+                FROM buscar_sitios_cercanos(:longitud, :latitud, :radio) AS resultado
+                JOIN sitios_turisticos st ON st.id = resultado.id
                 """;
 
         MapSqlParameterSource params = new MapSqlParameterSource()
