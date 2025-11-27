@@ -54,7 +54,7 @@ public class EstadisticasRepository {
                         id_usuario,
                         COUNT(*) AS conteo_resenas
                     FROM
-                        reseñas
+                        resenas
                     WHERE
                         fecha >= (CURRENT_TIMESTAMP - INTERVAL '6 months')
                     GROUP BY
@@ -142,7 +142,7 @@ public class EstadisticasRepository {
                         id_sitio,
                         MAX(fecha) AS ultima_fecha
                     FROM (
-                        SELECT id_sitio, fecha FROM reseñas
+                        SELECT id_sitio, fecha FROM resenas
                         UNION ALL
                         SELECT id_sitio, fecha FROM fotografias
                     ) AS contribuciones
@@ -180,7 +180,7 @@ public class EstadisticasRepository {
                         id_usuario,
                         AVG(calificacion) AS promedio_calificacion
                     FROM
-                        reseñas
+                        resenas
                     GROUP BY
                         id_usuario
                     HAVING
@@ -192,7 +192,7 @@ public class EstadisticasRepository {
                     r.contenido,
                     LENGTH(r.contenido) AS longitud_resena
                 FROM
-                    reseñas r
+                    resenas r
                 JOIN
                     usuarios u ON r.id_usuario = u.id
                 JOIN
@@ -217,12 +217,12 @@ public class EstadisticasRepository {
      * (Vista Materializada)
      */
     public List<ResumenContribucionesResponse> obtenerResumenContribuciones() {
-        String sql = "SELECT * FROM resumen_contribuciones_usuario ORDER BY total_resenas DESC";
+        String sql = "SELECT * FROM resumen_contribuciones_usuario ORDER BY total_reseñas DESC";
 
         return jdbc.query(sql, (rs, rowNum) -> new ResumenContribucionesResponse(
                 rs.getLong("id_usuario"),
                 rs.getString("nombre"),
-                rs.getInt("total_resenas"),
+                rs.getInt("total_reseñas"),
                 rs.getInt("total_fotos"),
                 rs.getInt("total_listas")
         ));

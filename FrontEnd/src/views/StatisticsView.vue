@@ -1,5 +1,7 @@
 <template>
   <div class="statistics-view">
+    <Navbar />
+
     <div class="header">
       <h1>📊 Panel de Estadísticas</h1>
       <p class="subtitle">Consultas SQL del Enunciado del Laboratorio</p>
@@ -184,6 +186,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { statisticsService } from '@/services/statisticsService'
+import Navbar from '@/components/layout/Navbar.vue'
 import ErrorMessage from '@/components/common/ErrorMessage.vue'
 
 const statsByType = ref([])
