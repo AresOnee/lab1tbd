@@ -134,7 +134,7 @@
         <div v-if="longestReviews.length > 0" class="reviews-list">
           <div v-for="(review, index) in longestReviews" :key="index" class="review-card">
             <div class="review-header">
-              <span class="rank">#{index + 1}</span>
+              <span class="rank">{{ index + 1 }}</span>
               <span class="author">{{ review.nombreUsuario }}</span>
               <span class="site">→ {{ review.nombreSitio }}</span>
               <span class="length">{{ review.longitudResena }} caracteres</span>
