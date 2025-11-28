@@ -222,14 +222,23 @@ const formatDistance = (metros) => {
 
 <style scoped>
 .nearby-sites-view {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-bottom: 3rem;
+}
+
+.nearby-sites-view > .header,
+.nearby-sites-view > .search-container,
+.nearby-sites-view > .results-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem;
 }
 
 .header {
   text-align: center;
   margin-bottom: 2rem;
+  padding-top: 2rem;
 }
 
 .header h1 {
