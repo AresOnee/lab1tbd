@@ -2,7 +2,19 @@
   <div class="review-card">
     <div class="review-header">
       <div class="review-author">
-        <strong>{{ review.nombreUsuario || review.usuarioNombre }}</strong>
+        <div class="author-info">
+          <router-link
+            :to="`/perfil/${review.idUsuario}`"
+            class="author-name"
+          >
+            {{ review.nombreUsuario || review.usuarioNombre }}
+          </router-link>
+          <FollowButton
+            v-if="!isOwnReview"
+            :user-id="review.idUsuario"
+            size="small"
+          />
+        </div>
         <RatingStars :rating="review.calificacion" :show-value="false" />
       </div>
       <div class="review-meta">
@@ -25,6 +37,7 @@
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import RatingStars from '@/components/common/RatingStars.vue'
+import FollowButton from '@/components/profile/FollowButton.vue'
 
 const props = defineProps({
   review: {
@@ -77,12 +90,26 @@ const handleDelete = () => {
 .review-author {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-.review-author strong {
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.author-name {
   color: #2c3e50;
   font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.author-name:hover {
+  color: #3498db;
+  text-decoration: underline;
 }
 
 .review-meta {

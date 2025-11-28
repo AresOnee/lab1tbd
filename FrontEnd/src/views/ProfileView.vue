@@ -11,14 +11,23 @@
             {{ userInitial }}
           </div>
           <div class="profile-info">
-            <h1>{{ user?.nombre }}</h1>
-            <p class="profile-email">{{ user?.email }}</p>
-            <p v-if="user?.biografia" class="profile-bio">{{ user.biografia }}</p>
+            <h1>{{ profileUser?.nombre }}</h1>
+            <p class="profile-email">{{ profileUser?.email }}</p>
+            <p v-if="profileUser?.biografia" class="profile-bio">{{ profileUser.biografia }}</p>
             <p v-else class="profile-bio-empty">Sin biografía</p>
           </div>
-          <button @click="showEditProfile = true" class="btn-edit-profile">
+          <button
+            v-if="isOwnProfile"
+            @click="showEditProfile = true"
+            class="btn-edit-profile"
+          >
             ✏️ Editar Perfil
           </button>
+          <FollowButton
+            v-else
+            :user-id="profileUserId"
+            @follow-changed="onFollowChanged"
+          />
         </div>
 
         <div class="stats-grid">
@@ -99,7 +108,7 @@
 
     <ProfileEditForm
       v-if="showEditProfile"
-      :user="user"
+      :user="currentUser"
       @close="showEditProfile = false"
       @updated="onProfileUpdated"
     />
@@ -107,31 +116,41 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useReviewsStore } from '@/stores/reviews'
 import { usePhotosStore } from '@/stores/photos'
 import { useListsStore } from '@/stores/lists'
 import { followersService } from '@/services/followersService'
+import { userService } from '@/services/userService'
 import Navbar from '@/components/layout/Navbar.vue'
 import RatingStars from '@/components/common/RatingStars.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import ProfileEditForm from '@/components/profile/ProfileEditForm.vue'
+import FollowButton from '@/components/profile/FollowButton.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const reviewsStore = useReviewsStore()
 const photosStore = usePhotosStore()
 const listsStore = useListsStore()
 
-const user = computed(() => authStore.user)
+const currentUser = computed(() => authStore.user)
 const reviews = computed(() => reviewsStore.reviews)
 const photos = computed(() => photosStore.photos)
 
 const loading = ref(false)
 const activeTab = ref('reviews')
 const showEditProfile = ref(false)
+const profileUser = ref(null)
+const profileUserId = ref(null)
+
+const isOwnProfile = computed(() => {
+  if (!profileUserId.value || !currentUser.value) return true
+  return profileUserId.value === currentUser.value.id
+})
 
 const stats = ref({
   totalResenas: 0,
@@ -151,7 +170,7 @@ const tabs = [
 ]
 
 const userInitial = computed(() => {
-  return user.value?.nombre?.charAt(0).toUpperCase() || 'U'
+  return profileUser.value?.nombre?.charAt(0).toUpperCase() || 'U'
 })
 
 const formatDate = (dateString) => {
@@ -166,27 +185,53 @@ const formatDate = (dateString) => {
 const onProfileUpdated = () => {
   showEditProfile.value = false
   // El perfil ya está actualizado en authStore por ProfileEditForm
+  profileUser.value = { ...currentUser.value }
+}
+
+const onFollowChanged = () => {
+  // Recargar estadísticas cuando cambia el seguimiento
+  loadFollowersStats()
 }
 
 const viewFollowers = () => {
-  router.push(`/perfil/${user.value.id}/seguidores?mode=followers`)
+  router.push(`/perfil/${profileUserId.value}/seguidores?mode=followers`)
 }
 
 const viewFollowing = () => {
-  router.push(`/perfil/${user.value.id}/seguidores?mode=following`)
+  router.push(`/perfil/${profileUserId.value}/seguidores?mode=following`)
 }
 
-onMounted(async () => {
+const loadFollowersStats = async () => {
+  try {
+    const data = await followersService.getStats(profileUserId.value)
+    followersStats.value = data
+  } catch (error) {
+    console.error('Error al cargar estadísticas de seguidores:', error)
+  }
+}
+
+const loadProfile = async () => {
   loading.value = true
   try {
-    const userId = user.value.id
+    // Obtener ID del perfil a mostrar
+    const userId = route.params.id ? parseInt(route.params.id) : currentUser.value?.id
+    profileUserId.value = userId
+
+    // Si es perfil propio, usar datos del authStore
+    if (isOwnProfile.value) {
+      profileUser.value = { ...currentUser.value }
+    } else {
+      // Si es perfil de otro usuario, cargar desde API
+      const userData = await userService.getUserById(userId)
+      profileUser.value = userData
+    }
+
+    // Cargar datos del usuario
     await Promise.all([
       reviewsStore.fetchByUserId(userId),
       photosStore.fetchByUserId(userId),
       listsStore.fetchByUserId(userId),
-      followersService.getStats(userId).then(data => {
-        followersStats.value = data
-      })
+      loadFollowersStats()
     ])
 
     stats.value = {
@@ -194,9 +239,22 @@ onMounted(async () => {
       totalFotos: photos.value.length,
       totalListas: listsStore.lists.length
     }
+  } catch (error) {
+    console.error('Error al cargar perfil:', error)
   } finally {
     loading.value = false
   }
+}
+
+// Watch para recargar cuando cambie el parámetro de ruta
+watch(() => route.params.id, () => {
+  if (route.name === 'profile' || route.name === 'user-profile') {
+    loadProfile()
+  }
+})
+
+onMounted(() => {
+  loadProfile()
 })
 </script>
 
