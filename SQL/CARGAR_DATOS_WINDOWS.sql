@@ -36,11 +36,11 @@ TRUNCATE TABLE listas_personalizadas CASCADE;
 TRUNCATE TABLE fotografias CASCADE;
 TRUNCATE TABLE seguidores CASCADE;
 
--- Para reseñas, verificar si existe la tabla
+-- Para resenas, verificar si existe la tabla
 DO $$
 BEGIN
     -- Intentar truncar con el nombre con ñ
-    EXECUTE 'TRUNCATE TABLE reseñas CASCADE';
+    EXECUTE 'TRUNCATE TABLE resenas CASCADE';
 EXCEPTION
     WHEN undefined_table THEN
         -- Si no existe, intentar sin ñ
@@ -48,7 +48,7 @@ EXCEPTION
             EXECUTE 'TRUNCATE TABLE resenas CASCADE';
         EXCEPTION
             WHEN undefined_table THEN
-                RAISE NOTICE 'No se encontró tabla de reseñas';
+                RAISE NOTICE 'No se encontró tabla de resenas';
         END;
 END $$;
 
@@ -72,16 +72,16 @@ BEGIN
             RAISE NOTICE 'Secuencia seguidores no existe';
     END;
 
-    -- Intentar resetear reseñas con ñ
+    -- Intentar resetear resenas con ñ
     BEGIN
-        EXECUTE 'ALTER SEQUENCE reseñas_id_seq RESTART WITH 1';
+        EXECUTE 'ALTER SEQUENCE resenas_id_seq RESTART WITH 1';
     EXCEPTION
         WHEN undefined_table THEN
             BEGIN
                 EXECUTE 'ALTER SEQUENCE resenas_id_seq RESTART WITH 1';
             EXCEPTION
                 WHEN undefined_table THEN
-                    RAISE NOTICE 'Secuencia reseñas no encontrada';
+                    RAISE NOTICE 'Secuencia resenas no encontrada';
             END;
     END;
 END $$;
@@ -167,7 +167,7 @@ DO $$
 BEGIN
     -- Intentar insertar en tabla con ñ
     BEGIN
-        INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+        INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
         -- Ana Garcia (ID 1)
         (1, 1, 'La vista desde el Cerro San Cristobal es increible!', 5, NOW() - INTERVAL '5 days'),
         (1, 5, 'El Museo de Bellas Artes tiene una coleccion impresionante.', 5, NOW() - INTERVAL '10 days'),
@@ -436,9 +436,9 @@ BEGIN
     SELECT COUNT(*) INTO v_usuarios FROM usuarios;
     SELECT COUNT(*) INTO v_sitios FROM sitios_turisticos;
 
-    -- Contar reseñas
+    -- Contar resenas
     BEGIN
-        EXECUTE 'SELECT COUNT(*) FROM reseñas' INTO v_resenas;
+        EXECUTE 'SELECT COUNT(*) FROM resenas' INTO v_resenas;
     EXCEPTION
         WHEN undefined_table THEN
             EXECUTE 'SELECT COUNT(*) FROM resenas' INTO v_resenas;
@@ -492,9 +492,9 @@ BEGIN
     BEGIN
         RAISE NOTICE 'Calificaciones promedio por tipo:';
         EXECUTE $sql$
-            SELECT tipo, ROUND(AVG(calificacion_promedio)::numeric, 2) AS promedio, SUM(total_reseñas) AS total
+            SELECT tipo, ROUND(AVG(calificacion_promedio)::numeric, 2) AS promedio, SUM(total_resenas) AS total
             FROM sitios_turisticos
-            WHERE total_reseñas > 0
+            WHERE total_resenas > 0
             GROUP BY tipo
             ORDER BY promedio DESC
         $sql$;
@@ -513,10 +513,10 @@ END $$;
 -- Mostrar usuarios mas activos
 SELECT
     nombre,
-    total_reseñas AS resenas,
+    total_resenas AS resenas,
     total_fotos AS fotos,
     total_listas AS listas,
-    (total_reseñas + total_fotos + total_listas) AS total
+    (total_resenas + total_fotos + total_listas) AS total
 FROM resumen_contribuciones_usuario
 ORDER BY total DESC
 LIMIT 10;
