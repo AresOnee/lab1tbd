@@ -1,5 +1,8 @@
 <template>
   <div class="followers-view">
+    <Navbar />
+
+    <div class="container">
     <div class="header">
       <h1>👥 {{ isFollowersMode ? 'Seguidores' : 'Siguiendo' }}</h1>
       <p class="subtitle">{{ userName }}</p>
@@ -64,6 +67,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -72,6 +76,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { followersService } from '@/services/followersService'
 import { useAuthStore } from '@/stores/auth'
+import Navbar from '@/components/layout/Navbar.vue'
 import FollowButton from '@/components/profile/FollowButton.vue'
 
 const route = useRoute()
@@ -165,6 +170,11 @@ onMounted(() => {
 
 <style scoped>
 .followers-view {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;

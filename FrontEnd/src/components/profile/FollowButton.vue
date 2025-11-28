@@ -3,7 +3,11 @@
     <button
       @click="toggleFollow"
       :disabled="loading"
-      :class="['follow-button', isFollowing ? 'following' : 'not-following']"
+      :class="[
+        'follow-button',
+        isFollowing ? 'following' : 'not-following',
+        size === 'small' ? 'small' : ''
+      ]"
     >
       <span v-if="!loading">
         {{ isFollowing ? '✓ Siguiendo' : '+ Seguir' }}
@@ -21,6 +25,11 @@ const props = defineProps({
   userId: {
     type: Number,
     required: true
+  },
+  size: {
+    type: String,
+    default: 'normal',
+    validator: (value) => ['small', 'normal'].includes(value)
   }
 })
 
@@ -77,6 +86,13 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s;
   min-width: 120px;
+}
+
+.follow-button.small {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  min-width: 90px;
+  border-radius: 6px;
 }
 
 .follow-button:disabled {
