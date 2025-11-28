@@ -12,9 +12,9 @@
     <div class="form-wrapper">
       <v-card elevation="10" rounded="xl" class="pa-8 login-card">
         <v-card-title class="text-center">
-          <div class="text-h4 font-weight-bold">Explora Chile</div>
+          <div class="text-h4 font-weight-bold">Crear Cuenta</div>
           <div class="text-subtitle-2 mt-1">
-            Descubre lugares increíbles cerca de ti
+            Únete a la comunidad y comparte tus aventuras
           </div>
         </v-card-title>
 
@@ -24,7 +24,16 @@
           {{ authStore.error }}
         </v-alert>
 
-        <v-form @submit.prevent="doLogin" v-model="valid">
+        <v-form @submit.prevent="doRegister" v-model="valid">
+          <v-text-field
+            v-model="nombre"
+            label="Nombre Completo"
+            prepend-inner-icon="mdi-account"
+            variant="outlined"
+            density="comfortable"
+            :rules="[rules.required]"
+          />
+
           <v-text-field
             v-model="email"
             label="Correo"
@@ -44,6 +53,16 @@
             :rules="[rules.required]"
           />
 
+          <v-textarea
+            v-model="biografia"
+            label="Biografía (opcional)"
+            prepend-inner-icon="mdi-text-box-edit-outline"
+            variant="outlined"
+            rows="3"
+            auto-grow
+            density="comfortable"
+          />
+
           <v-btn
             block
             size="large"
@@ -53,14 +72,14 @@
             type="submit"
             :loading="authStore.loading"
           >
-            Iniciar Sesión
+            Registrarme
           </v-btn>
         </v-form>
 
         <div class="text-center mt-4">
-          ¿No tienes cuenta?
-          <v-btn variant="text" color="blue-darken-2" @click="goRegister">
-            Crear cuenta
+          ¿Ya tienes cuenta?
+          <v-btn variant="text" color="blue-darken-2" @click="goLogin">
+            Iniciar Sesión
           </v-btn>
         </div>
       </v-card>
@@ -71,9 +90,8 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from '@/stores/auth'; // Usamos el store de Aresonee
+import { useAuthStore } from '@/stores/auth';
 
-// Importación de imágenes
 import img1 from "@/assets/carrusel/img1.jpg";
 import img2 from "@/assets/carrusel/img2.jpg";
 import img3 from "@/assets/carrusel/img3.jpg";
@@ -82,64 +100,63 @@ import img4 from "@/assets/carrusel/img4.jpg";
 const images = [img1, img2, img3, img4];
 const currentImage = ref(0);
 
-/* CAMBIO DE IMAGEN CADA 5 SEGUNDOS */
 setInterval(() => {
   currentImage.value = (currentImage.value + 1) % images.length;
 }, 5000);
 
-/* LÓGICA DEL FORMULARIO */
 const router = useRouter();
-const authStore = useAuthStore(); // Instancia del store
+const authStore = useAuthStore();
 
+const nombre = ref("");
 const email = ref("");
 const password = ref("");
+const biografia = ref("");
 const valid = ref(false);
 
 const rules = { required: v => !!v || "Campo obligatorio" };
 
-const doLogin = async () => {
+const doRegister = async () => {
   if (!valid.value) return;
 
   try {
-    // Usamos el método login del store existente en Aresonee
-    // Esto asegura que el token y el usuario se guarden correctamente en Pinia y LocalStorage
-    await authStore.login({
+    // Usamos el register del store de Aresonee
+    await authStore.register({
+        nombre: nombre.value,
         email: email.value, 
-        password: password.value
+        password: password.value, 
+        biografia: biografia.value
     });
     
-    // Si no hay error, redirigir
-    router.push("/"); 
+    // Si el registro es exitoso, redirigimos al home 
+    // (o al login si tu lógica de backend no loguea automáticamente, pero el store parece que sí lo hace)
+    router.push("/");
   } catch (err) {
-    console.error("Error en login:", err);
-    // El error ya se maneja en el store y se muestra en el v-alert
+    console.error("Error al registrarse:", err);
   }
 };
 
-const goRegister = () => router.push("/register");
+const goLogin = () => router.push("/login");
 </script>
 
 <style scoped>
-/* Estilos traídos del Grupo 5 */
+/* Mismos estilos que en LoginView */
 .background-container {
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
 }
-
 .image-wrapper {
   width: 100%;
   height: 100%;
   position: absolute;
   inset: 0;
 }
-
 .bg-image {
   position: absolute;
   inset: 0;
-  width: 102%;
-  height: 102%;
+  width: 102%;     
+  height: 102%;    
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -148,7 +165,6 @@ const goRegister = () => router.push("/register");
   background-repeat: no-repeat;
   filter: blur(8px);
 }
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 1.2s ease;
@@ -157,7 +173,6 @@ const goRegister = () => router.push("/register");
 .fade-leave-to {
   opacity: 0;
 }
-
 .form-wrapper {
   position: absolute;
   inset: 0;
@@ -166,11 +181,10 @@ const goRegister = () => router.push("/register");
   align-items: center;
   padding: 20px;
 }
-
 .login-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 450px;
   background: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 </style>
