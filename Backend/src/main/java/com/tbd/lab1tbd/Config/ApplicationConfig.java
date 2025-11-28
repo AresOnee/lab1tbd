@@ -24,7 +24,6 @@ public class ApplicationConfig {
 
     /**
      * Define cómo Spring Security debe buscar a un usuario.
-     * Usamos el 'UserRepository' que ya tenías para buscar por email.
      */
     @Bean
     public UserDetailsService userDetailsService() {
@@ -42,7 +41,7 @@ public class ApplicationConfig {
                         return new org.springframework.security.core.userdetails.User(
                                 user.getEmail(),
                                 hash, // Aquí va la contraseña hasheada
-                                java.util.Collections.emptyList() // Roles/Autoridades (vacío por ahora)
+                                java.util.Collections.emptyList()
                         );
                     })
                     .orElseThrow(() -> {

@@ -20,8 +20,7 @@ import java.io.IOException;
 
 /**
  * Este filtro se ejecuta UNA VEZ por cada petición.
- * Es el "guardia de seguridad" que intercepta las peticiones,
- * busca el token JWT y valida al usuario.
+ * Es el que intercepta las peticiones, busca el token JWT y valida al usuario.
  */
 @Component
 @RequiredArgsConstructor

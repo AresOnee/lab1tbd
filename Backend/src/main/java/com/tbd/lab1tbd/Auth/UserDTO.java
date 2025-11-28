@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO (Data Transfer Object) para enviar información del usuario al frontend
- * sin incluir información sensible como el hash de la contraseña
- */
+//DTO  para enviar información del usuario al frontend sin incluir información sensible como el hash de la contraseña
+
 @Data
 @Builder
 @AllArgsConstructor

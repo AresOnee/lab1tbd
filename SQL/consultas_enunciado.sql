@@ -1,6 +1,5 @@
--- =============================================
--- Consultas del Enunciado (Laboratorio 1)
--- =============================================
+
+-- Consultas del Enunciado Laboratorio 1
 
 -- Consulta 1: Cálculo de Calificación Promedio y Conteo de Reseñas por tipo.
 SELECT
@@ -61,10 +60,7 @@ WHERE
     AND total_resenas < 10;
 
 -- Consulta 5: Análisis de Popularidad por Región.
--- NOTA: El esquema original no incluye 'región' o 'ciudad'.
--- Para que esta consulta funcione, se DEBE agregar una columna a 'sitios_turisticos'.
--- Ejemplo de ALTER: ALTER TABLE sitios_turisticos ADD COLUMN ciudad VARCHAR(100);
--- Asumiendo que la columna 'ciudad' existe y está poblada:
+
 SELECT
     ciudad,
     SUM(total_resenas) AS total_resenas_por_ciudad

@@ -15,8 +15,8 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     /**
-     * Endpoint público para registrar un nuevo usuario.
-     * POST /auth/register
+     Endpoint público para registrar un nuevo usuario.
+     POST /auth/register
      */
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -26,8 +26,8 @@ public class AuthenticationController {
     }
 
     /**
-     * Endpoint público para autenticar (loguear) un usuario.
-     * POST /auth/login
+     Endpoint público para autenticar (loguear) un usuario.
+     POST /auth/login
      */
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(

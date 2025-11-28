@@ -71,7 +71,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from '@/stores/auth'; // Usamos el store de Aresonee
+import { useAuthStore } from '@/stores/auth';
 
 // Importación de imágenes
 import img1 from "@/assets/carrusel/img1.jpg";
@@ -82,12 +82,10 @@ import img4 from "@/assets/carrusel/img4.jpg";
 const images = [img1, img2, img3, img4];
 const currentImage = ref(0);
 
-/* CAMBIO DE IMAGEN CADA 5 SEGUNDOS */
 setInterval(() => {
   currentImage.value = (currentImage.value + 1) % images.length;
 }, 5000);
 
-/* LÓGICA DEL FORMULARIO */
 const router = useRouter();
 const authStore = useAuthStore(); // Instancia del store
 
@@ -101,8 +99,6 @@ const doLogin = async () => {
   if (!valid.value) return;
 
   try {
-    // Usamos el método login del store existente en Aresonee
-    // Esto asegura que el token y el usuario se guarden correctamente en Pinia y LocalStorage
     await authStore.login({
         email: email.value, 
         password: password.value
@@ -112,7 +108,7 @@ const doLogin = async () => {
     router.push("/"); 
   } catch (err) {
     console.error("Error en login:", err);
-    // El error ya se maneja en el store y se muestra en el v-alert
+   
   }
 };
 

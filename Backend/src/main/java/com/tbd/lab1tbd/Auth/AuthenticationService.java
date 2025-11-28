@@ -28,10 +28,8 @@ public class AuthenticationService {
         user.setName(request.getNombre());
         user.setEmail(request.getEmail());
         
-        // ¡IMPORTANTE! Hasheamos la contraseña antes de guardarla
+        // Hasheamos la contraseña antes de guardarla
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // (Asegúrate que tu POJO UserEntity use 'password' para el hash, 
-        // o ajusta el nombre del campo si es 'contrasena_hash')
 
         // Guardamos en la BD usando tu repositorio
         Long userId = userRepository.create(user);

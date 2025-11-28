@@ -54,21 +54,19 @@ public class ListaService {
     }
 
     public List<SitioTuristico> getSitios(Long idLista) {
-        // Opcional: podrías verificar si la lista existe primero
-        // listaRepository.findAutorId(idLista).orElseThrow(...);
         return listaRepository.getSitiosByListaId(idLista);
     }
 
     public void delete(Long idLista, String userEmail) {
         Long idUsuario = getUserIdFromEmail(userEmail);
-        checkAutorizacion(idLista, idUsuario); // ¡Autorización!
+        checkAutorizacion(idLista, idUsuario);
         
         listaRepository.delete(idLista);
     }
 
     public void addSitio(Long idLista, Long idSitio, String userEmail) {
         Long idUsuario = getUserIdFromEmail(userEmail);
-        checkAutorizacion(idLista, idUsuario); // ¡Autorización!
+        checkAutorizacion(idLista, idUsuario);
         
         // Verificamos que el sitio existe
         sitioTuristicoService.getById(idSitio);
@@ -78,7 +76,7 @@ public class ListaService {
 
     public void removeSitio(Long idLista, Long idSitio, String userEmail) {
         Long idUsuario = getUserIdFromEmail(userEmail);
-        checkAutorizacion(idLista, idUsuario); // ¡Autorización!
+        checkAutorizacion(idLista, idUsuario);
 
         listaRepository.removeSitioFromLista(idLista, idSitio);
     }

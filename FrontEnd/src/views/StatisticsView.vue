@@ -223,7 +223,6 @@ const loadAllStatistics = async () => {
     longestReviews.value = results[5].status === 'fulfilled' ? results[5].value : []
     contributionsSummary.value = results[6].status === 'fulfilled' ? results[6].value : []
 
-    // Verificar si hay errores
     const failedRequests = results.filter(r => r.status === 'rejected')
     if (failedRequests.length > 0) {
       console.error('Errores en algunas consultas:', failedRequests)

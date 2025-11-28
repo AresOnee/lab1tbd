@@ -5,7 +5,6 @@ import App from './App.vue'
 import router from './router'
 import './assets/styles/main.css'
 
-// --- INICIO CONFIGURACIÓN VUETIFY ---
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -16,7 +15,6 @@ const vuetify = createVuetify({
   components,
   directives,
 })
-// --- FIN CONFIGURACIÓN VUETIFY ---
 
 const app = createApp(App)
 

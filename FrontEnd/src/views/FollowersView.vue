@@ -145,7 +145,6 @@ const formatDate = (dateString) => {
   })
 }
 
-// Watch para cambios en la ruta
 watch(() => route.params.id, (newId) => {
   if (newId) {
     userId.value = parseInt(newId)

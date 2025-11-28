@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 /**
- * POJO que representa la tabla 'reseñas'.
+ * representa la tabla 'reseñas'.
  * Usado internamente para la lógica de negocio.
  */
 @Data

@@ -1,12 +1,9 @@
 -- =============================================
--- SCRIPT DE LIMPIEZA Y RECARGA - VERSION WINDOWS
--- =============================================
--- Compatible con encoding WIN1252
--- Sin emojis ni caracteres especiales
+-- SCRIPT DE LIMPIEZA Y RECARGA
 -- =============================================
 
 -- =============================================
--- PASO 0: CREAR INDICE UNICO SI NO EXISTE
+-- CREAR INDICE UNICO SI NO EXISTE
 -- =============================================
 
 DO $$
@@ -25,7 +22,7 @@ BEGIN
 END $$;
 
 -- =============================================
--- PASO 1: ELIMINAR TODOS LOS DATOS
+-- ELIMINAR TODOS LOS DATOS
 -- =============================================
 
 RAISE NOTICE 'Eliminando todos los datos existentes...';
@@ -88,9 +85,9 @@ END $$;
 
 RAISE NOTICE 'Datos eliminados correctamente';
 
--- =============================================
--- PASO 2: INSERTAR USUARIOS
--- =============================================
+
+-- INSERTAR USUARIOS
+
 
 RAISE NOTICE 'Insertando usuarios...';
 
@@ -106,9 +103,9 @@ INSERT INTO usuarios (nombre, email, contrasena_hash, biografia, fecha_registro)
 ('Isabel Nunez', 'isabel@tbd.cl', '$2a$10$eA95nPuWcZ.TC7KA5i1OveQ/FJzUTssTaRrJbcmGzPijoIWY8F.O2', 'Bloguera de viajes. Compartiendo experiencias locales.', '2024-09-14 12:00:00'),
 ('Javier Pinto', 'javier@tbd.cl', '$2a$10$eA95nPuWcZ.TC7KA5i1OveQ/FJzUTssTaRrJbcmGzPijoIWY8F.O2', 'Estudiante de fotografia. Capturando la esencia de la ciudad.', '2024-10-01 08:30:00');
 
--- =============================================
--- PASO 3: INSERTAR SITIOS TURISTICOS
--- =============================================
+
+-- INSERTAR SITIOS TURISTICOS
+
 
 RAISE NOTICE 'Insertando sitios turisticos...';
 
@@ -156,9 +153,9 @@ INSERT INTO sitios_turisticos (nombre, descripcion, tipo, coordenadas, ciudad) V
 ('The Clinic', 'Bar con terraza y buena seleccion de cervezas.', 'Bar', ST_SetSRID(ST_MakePoint(-70.6365, -33.4330), 4326), 'Santiago'),
 ('La Piojera', 'Bar tradicional, famoso por la terremoto.', 'Bar', ST_SetSRID(ST_MakePoint(-70.6600, -33.4500), 4326), 'Santiago');
 
--- =============================================
--- PASO 4: INSERTAR RESENAS (calificaciones ALTAS)
--- =============================================
+
+-- INSERTAR RESENAS (calificaciones ALTAS)
+
 
 RAISE NOTICE 'Insertando resenas...';
 
@@ -305,9 +302,9 @@ BEGIN
     END;
 END $$;
 
--- =============================================
--- PASO 5: INSERTAR FOTOGRAFIAS
--- =============================================
+
+-- INSERTAR FOTOGRAFIAS
+
 
 RAISE NOTICE 'Insertando fotografias...';
 
@@ -343,9 +340,9 @@ INSERT INTO fotografias (id_usuario, id_sitio, url, fecha) VALUES
 (9, 22, 'https://picsum.photos/800/600?random=29', NOW() - INTERVAL '3 days'),
 (9, 23, 'https://picsum.photos/800/600?random=30', NOW() - INTERVAL '8 days');
 
--- =============================================
--- PASO 6: INSERTAR SEGUIDORES
--- =============================================
+
+-- INSERTAR SEGUIDORES
+
 
 RAISE NOTICE 'Insertando seguidores...';
 
@@ -377,9 +374,9 @@ INSERT INTO seguidores (id_seguidor, id_seguido, fecha_inicio) VALUES
 (10, 1, '2024-10-10 14:00:00'),
 (10, 9, '2024-10-20 15:00:00');
 
--- =============================================
--- PASO 7: INSERTAR LISTAS
--- =============================================
+
+-- INSERTAR LISTAS
+
 
 RAISE NOTICE 'Insertando listas personalizadas...';
 
@@ -411,17 +408,17 @@ INSERT INTO lista_sitios (id_lista, id_sitio) VALUES
 (8, 1), (8, 15), (8, 9), (8, 22), (8, 23),
 (9, 1), (9, 2), (9, 5), (9, 20), (9, 21);
 
--- =============================================
--- PASO 9: REFRESCAR VISTA MATERIALIZADA
--- =============================================
+
+-- REFRESCAR VISTA MATERIALIZADA
+
 
 RAISE NOTICE 'Refrescando vista materializada...';
 
 REFRESH MATERIALIZED VIEW CONCURRENTLY resumen_contribuciones_usuario;
 
--- =============================================
--- PASO 10: VERIFICACION
--- =============================================
+
+-- VERIFICACION
+
 
 DO $$
 DECLARE

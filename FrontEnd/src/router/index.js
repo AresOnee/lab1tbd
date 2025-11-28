@@ -90,7 +90,6 @@ const router = createRouter({
   ]
 })
 
-// Navigation guards
 router.beforeEach((to, from, next) => {
   const isAuthenticated = authService.isAuthenticated()
 

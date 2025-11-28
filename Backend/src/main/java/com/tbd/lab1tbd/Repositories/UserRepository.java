@@ -31,7 +31,6 @@ public class UserRepository {
         }
     };
 
-    // Nota: El hasheo se hace en el SERVICIO, antes de llamar a este método.
     public Long create(UserEntity u) {
         String sql = """
                 INSERT INTO usuarios(nombre, email, contrasena_hash)

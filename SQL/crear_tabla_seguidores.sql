@@ -1,7 +1,6 @@
--- =============================================
+
 -- CREAR TABLA DE SEGUIDORES
 -- Funcionalidad de red social: usuarios pueden seguir a otros usuarios
--- =============================================
 
 -- Crear tabla de seguidores (relación N:M entre usuarios)
 CREATE TABLE IF NOT EXISTS seguidores (

@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO para retornar información de un seguidor o seguido.
- * Incluye datos básicos del usuario y la fecha de inicio del seguimiento.
+/*
+  DTO para retornar información de un seguidor o seguido.
+  Incluye datos básicos del usuario y la fecha de inicio del seguimiento.
  */
 @Data
 @NoArgsConstructor

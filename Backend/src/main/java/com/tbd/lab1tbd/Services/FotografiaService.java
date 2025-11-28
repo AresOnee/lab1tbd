@@ -39,7 +39,7 @@ public class FotografiaService {
         // 2. Verificamos que el sitio existe
         sitioTuristicoService.getById(idSitio);
         
-        // 3. Creamos el POJO de la fotografía
+        // 3. Creamos la fotografía
         Fotografia fotografia = new Fotografia();
         fotografia.setIdUsuario(idUsuario);
         fotografia.setIdSitio(idSitio);

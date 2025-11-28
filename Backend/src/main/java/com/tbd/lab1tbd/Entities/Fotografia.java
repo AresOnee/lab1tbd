@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 /**
- * POJO que representa la tabla 'fotografias'.
+ * representa la tabla 'fotografias'.
  */
 @Data
 @NoArgsConstructor

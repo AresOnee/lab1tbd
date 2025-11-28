@@ -33,7 +33,6 @@ public class UserController {
     // Este endpoint ahora estará PROTEGIDO por JWT.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        // (Aquí faltaría lógica de autorización)
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -127,8 +127,6 @@ const doRegister = async () => {
         biografia: biografia.value
     });
     
-    // Si el registro es exitoso, redirigimos al home 
-    // (o al login si tu lógica de backend no loguea automáticamente, pero el store parece que sí lo hace)
     router.push("/");
   } catch (err) {
     console.error("Error al registrarse:", err);
