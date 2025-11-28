@@ -36,6 +36,16 @@
         </div>
       </div>
 
+      <!-- Placeholder para Mapa Interactivo (Laboratorio 2) -->
+      <div class="map-placeholder">
+        <div class="map-placeholder-content">
+          <div class="map-icon">🗺️</div>
+          <h3>Mapa Interactivo</h3>
+          <p>Aquí se mostrará la ubicación de los sitios turísticos</p>
+          <p class="map-note">Funcionalidad disponible en la siguiente entrega</p>
+        </div>
+      </div>
+
       <LoadingSpinner v-if="sitesStore.loading" message="Cargando sitios..." />
       <ErrorMessage v-else-if="sitesStore.error" :message="sitesStore.error" />
 
@@ -172,6 +182,58 @@ onMounted(async () => {
 .filter-group input:focus {
   outline: none;
   border-color: #3498db;
+}
+
+/* Placeholder para Mapa Interactivo */
+.map-placeholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder-content {
+  text-align: center;
+  color: white;
+}
+
+.map-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.map-placeholder-content h3 {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.map-placeholder-content p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  opacity: 0.95;
+}
+
+.map-note {
+  font-size: 0.9rem !important;
+  opacity: 0.8 !important;
+  font-style: italic;
+  margin-top: 1rem !important;
 }
 
 .sites-grid {
