@@ -254,11 +254,18 @@ onMounted(() => {
 
 <style scoped>
 .statistics-view {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #f8f9fa;
   min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+  padding-bottom: 3rem;
+}
+
+.statistics-view > .header,
+.statistics-view > .reload-section,
+.statistics-view > .stats-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .header {
