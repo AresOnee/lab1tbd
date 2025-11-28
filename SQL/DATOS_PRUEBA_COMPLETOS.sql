@@ -7,7 +7,7 @@
 -- Incluye:
 -- - 10 usuarios con diferentes perfiles
 -- - 20+ sitios turísticos variados (teatros, restaurantes, museos, parques, etc.)
--- - 50+ reseñas con diferentes calificaciones
+-- - 50+ resenas con diferentes calificaciones
 -- - 30+ fotografías
 -- - Relaciones de seguidores (red social)
 -- - Múltiples listas personalizadas
@@ -21,7 +21,7 @@
 -- TRUNCATE TABLE lista_sitios CASCADE;
 -- TRUNCATE TABLE listas_personalizadas CASCADE;
 -- TRUNCATE TABLE fotografias CASCADE;
--- TRUNCATE TABLE reseñas CASCADE;
+-- TRUNCATE TABLE resenas CASCADE;
 -- TRUNCATE TABLE seguidores CASCADE;
 -- TRUNCATE TABLE sitios_turisticos CASCADE;
 -- TRUNCATE TABLE usuarios CASCADE;
@@ -93,13 +93,13 @@ INSERT INTO sitios_turisticos (nombre, descripcion, tipo, coordenadas, ciudad) V
 ON CONFLICT DO NOTHING;
 
 -- =============================================
--- 3. RESEÑAS (50+ reseñas variadas)
+-- 3. resenaS (50+ resenas variadas)
 -- =============================================
 -- Distribuidas entre todos los usuarios y sitios
 -- Incluye fechas antiguas para la consulta #7
 
--- Ana García (ID 1) - Muy activa, reseñas recientes
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+-- Ana García (ID 1) - Muy activa, resenas recientes
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (1, 1, '¡La vista desde el Cerro San Cristóbal es increíble! Vale totalmente la pena subir.', 5, NOW() - INTERVAL '5 days'),
 (1, 5, 'El Museo de Bellas Artes tiene una colección impresionante. Un imperdible para los amantes del arte.', 5, NOW() - INTERVAL '10 days'),
 (1, 16, 'La Moneda es espectacular. El cambio de guardia es muy interesante de ver.', 4, NOW() - INTERVAL '15 days'),
@@ -107,7 +107,7 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (1, 13, 'Asistí a una ópera en el Teatro Municipal. La acústica es perfecta.', 5, NOW() - INTERVAL '20 days');
 
 -- Bruno Díaz (ID 2) - Enfocado en gastronomía
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (2, 9, 'La mejor selección de vinos que he visto en Santiago. La comida es perfecta.', 5, NOW() - INTERVAL '3 days'),
 (2, 10, 'Liguria tiene ese ambiente bohemio que me encanta. La comida casera es deliciosa.', 4, NOW() - INTERVAL '8 days'),
 (2, 11, 'Peumayen ofrece una experiencia única con ingredientes ancestrales chilenos.', 5, NOW() - INTERVAL '12 days'),
@@ -115,7 +115,7 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (2, 19, 'Café Colmado tiene los mejores pasteles de la zona. Muy recomendado.', 4, NOW() - INTERVAL '2 days');
 
 -- Carla Soto (ID 3) - Ama parques y espacios al aire libre
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (3, 1, 'Perfecto para un picnic el fin de semana. El teleférico es genial.', 5, NOW() - INTERVAL '4 days'),
 (3, 2, 'El Parque Forestal es ideal para caminar y hacer ejercicio. Muy tranquilo.', 4, NOW() - INTERVAL '9 days'),
 (3, 3, 'Parque Bicentenario es moderno y bien mantenido. Perfecto para niños.', 4, NOW() - INTERVAL '14 days'),
@@ -123,14 +123,14 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (3, 17, 'La Plaza de Armas siempre está llena de vida. Centro histórico de Santiago.', 3, NOW() - INTERVAL '18 days');
 
 -- Diego Morales (ID 4) - Crítico de teatro
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (4, 13, 'El Teatro Municipal es joya arquitectónica. La programación es de primer nivel.', 5, NOW() - INTERVAL '7 days'),
 (4, 14, 'Teatro Universidad de Chile tiene una rica historia. Excelente acústica.', 5, NOW() - INTERVAL '13 days'),
 (4, 15, 'GAM es un espacio moderno y versátil. La programación es siempre interesante.', 4, NOW() - INTERVAL '19 days'),
 (4, 5, 'El edificio del Museo de Bellas Artes es hermoso por dentro y por fuera.', 4, NOW() - INTERVAL '25 days');
 
 -- Elena Fernández (ID 5) - Historiadora
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (5, 16, 'La Moneda tiene tanta historia. Recomiendo el tour guiado.', 5, NOW() - INTERVAL '5 days'),
 (5, 17, 'Plaza de Armas es el corazón de Santiago. Aquí comenzó todo.', 5, NOW() - INTERVAL '10 days'),
 (5, 18, 'La Catedral Metropolitana es impresionante. Arquitectura neoclásica pura.', 5, NOW() - INTERVAL '15 days'),
@@ -138,14 +138,14 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (5, 6, 'Museo de la Memoria es conmovedor y necesario. Visita obligada.', 5, NOW() - INTERVAL '20 days');
 
 -- Felipe Torres (ID 6) - Sommelier
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (6, 9, 'Bocanáriz es mi lugar favorito. La carta de vinos es excelente.', 5, NOW() - INTERVAL '2 days'),
 (6, 11, 'Peumayen tiene un maridaje perfecto entre vino y comida ancestral.', 5, NOW() - INTERVAL '6 days'),
 (6, 12, 'La bodega de Astrid y Gastón es impresionante. Grandes vinos.', 4, NOW() - INTERVAL '12 days'),
 (6, 21, 'La Piojera es una experiencia auténtica. Probé el famoso terremoto.', 3, NOW() - INTERVAL '16 days');
 
 -- Gabriela Rojas (ID 7) - Arquitecta
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (7, 13, 'La arquitectura del Teatro Municipal es sublime. Cada detalle cuenta.', 5, NOW() - INTERVAL '4 days'),
 (7, 5, 'El Palacio de Bellas Artes es una joya arquitectónica del siglo XX.', 5, NOW() - INTERVAL '9 days'),
 (7, 18, 'La fachada neoclásica de la Catedral es impresionante.', 4, NOW() - INTERVAL '14 days'),
@@ -153,14 +153,14 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (7, 15, 'GAM representa la arquitectura contemporánea chilena. Muy innovador.', 5, NOW() - INTERVAL '18 days');
 
 -- Héctor Vargas (ID 8) - Ciclista urbano
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (8, 1, 'Subir el San Cristóbal en bici es un desafío. Las vistas valen el esfuerzo.', 4, NOW() - INTERVAL '3 days'),
 (8, 2, 'Parque Forestal tiene buenas ciclovías. Ideal para pedalear.', 5, NOW() - INTERVAL '7 days'),
 (8, 3, 'Bicentenario es perfecto para andar en bici con la familia.', 4, NOW() - INTERVAL '13 days'),
 (8, 4, 'Quinta Normal tiene rutas ciclísticas amplias y seguras.', 4, NOW() - INTERVAL '17 days');
 
 -- Isabel Núñez (ID 9) - Bloguera de viajes
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (9, 1, 'El Cerro San Cristóbal es el mejor mirador de Santiago. Fotos espectaculares.', 5, NOW() - INTERVAL '1 day'),
 (9, 9, 'Bocanáriz es perfecto para una cita romántica. Ambiente íntimo.', 5, NOW() - INTERVAL '5 days'),
 (9, 13, 'Asistir al Teatro Municipal es una experiencia de lujo. Totalmente recomendado.', 5, NOW() - INTERVAL '10 days'),
@@ -168,15 +168,15 @@ INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALU
 (9, 20, 'Wonderland Café tiene una decoración de cuento. Me encantó.', 4, NOW() - INTERVAL '8 days');
 
 -- Javier Pinto (ID 10) - Estudiante de fotografía
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (10, 1, 'Las mejores fotos de Santiago se toman desde aquí. Luz perfecta al atardecer.', 5, NOW() - INTERVAL '2 days'),
 (10, 2, 'Parque Forestal es fotogénico en cada estación. Árboles hermosos.', 5, NOW() - INTERVAL '6 days'),
 (10, 5, 'El interior del Museo de Bellas Artes es un sueño para fotógrafos.', 5, NOW() - INTERVAL '11 days'),
 (10, 17, 'Plaza de Armas tiene mucha vida urbana. Buenas fotos callejeras.', 4, NOW() - INTERVAL '15 days'),
 (10, 18, 'La Catedral tiene detalles arquitectónicos increíbles para fotografiar.', 5, NOW() - INTERVAL '9 days');
 
--- Reseñas ANTIGUAS (más de 3 meses) para probar consulta #7
-INSERT INTO reseñas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
+-- resenas ANTIGUAS (más de 3 meses) para probar consulta #7
+INSERT INTO resenas (id_usuario, id_sitio, contenido, calificacion, fecha) VALUES
 (1, 21, 'Experiencia auténtica en La Piojera. Muy tradicional.', 3, NOW() - INTERVAL '120 days'),
 (2, 2, 'Buen lugar para caminar.', 4, NOW() - INTERVAL '100 days'),
 (3, 7, 'Colección interesante.', 4, NOW() - INTERVAL '110 days');
@@ -406,8 +406,8 @@ SELECT COUNT(*) AS total_usuarios FROM usuarios;
 -- Contar sitios turísticos
 SELECT COUNT(*) AS total_sitios FROM sitios_turisticos;
 
--- Contar reseñas
-SELECT COUNT(*) AS total_reseñas FROM reseñas;
+-- Contar resenas
+SELECT COUNT(*) AS total_resenas FROM resenas;
 
 -- Contar fotografías
 SELECT COUNT(*) AS total_fotografias FROM fotografias;
@@ -423,23 +423,23 @@ SELECT
     nombre,
     tipo,
     calificacion_promedio,
-    total_reseñas
+    total_resenas
 FROM sitios_turisticos
-WHERE total_reseñas > 0
-ORDER BY calificacion_promedio DESC, total_reseñas DESC;
+WHERE total_resenas > 0
+ORDER BY calificacion_promedio DESC, total_resenas DESC;
 
 -- Ver usuarios más activos
 SELECT * FROM resumen_contribuciones_usuario
-ORDER BY (total_reseñas + total_fotos + total_listas) DESC;
+ORDER BY (total_resenas + total_fotos + total_listas) DESC;
 
 -- Ver sitios con poca actividad reciente (consulta #7)
 SELECT
     s.nombre,
     s.tipo,
-    COUNT(DISTINCT r.id) AS reseñas_recientes,
+    COUNT(DISTINCT r.id) AS resenas_recientes,
     COUNT(DISTINCT f.id) AS fotos_recientes
 FROM sitios_turisticos s
-LEFT JOIN reseñas r ON s.id = r.id_sitio AND r.fecha > (NOW() - INTERVAL '90 days')
+LEFT JOIN resenas r ON s.id = r.id_sitio AND r.fecha > (NOW() - INTERVAL '90 days')
 LEFT JOIN fotografias f ON s.id = f.id_sitio AND f.fecha > (NOW() - INTERVAL '90 days')
 GROUP BY s.id, s.nombre, s.tipo
 HAVING COUNT(DISTINCT r.id) = 0 AND COUNT(DISTINCT f.id) = 0
