@@ -38,12 +38,15 @@ CREATE TABLE sitios_turisticos (
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT,
     tipo VARCHAR(50),
-    
+
     -- Usamos GEOGRAPHY(POINT, 4326) de PostGIS.
     -- Almacena (Longitud, Latitud) en el estándar WGS 84 (SRID 4326).
     -- Esto es esencial para la consulta de proximidad (#3).
     coordenadas GEOGRAPHY(POINT, 4326),
-    
+
+    -- Ciudad donde se encuentra el sitio (Requerido para Consulta #5)
+    ciudad VARCHAR(100),
+
     -- Estas columnas serán actualizadas por el trigger (Requisito #6)
     calificacion_promedio DECIMAL(3, 2) DEFAULT 0.0,
     total_reseñas INT DEFAULT 0

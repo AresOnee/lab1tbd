@@ -87,6 +87,7 @@
         <aside class="sidebar">
           <div class="info-card">
             <h3>Ubicación</h3>
+            <p v-if="site.ciudad" class="city-name">📍 {{ site.ciudad }}</p>
             <p v-if="site.latitud && site.longitud" class="coordinates">
               <strong>Latitud:</strong> {{ site.latitud }}<br />
               <strong>Longitud:</strong> {{ site.longitud }}
@@ -437,6 +438,13 @@ section h2 {
 .info-card h3 {
   margin: 0 0 1rem 0;
   color: #2c3e50;
+}
+
+.city-name {
+  color: #3498db;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
 }
 
 .coordinates {
