@@ -112,8 +112,6 @@ INSERT INTO usuarios (nombre, email, contrasena_hash, biografia, fecha_registro)
 
 RAISE NOTICE 'Insertando sitios turisticos...';
 
-ALTER TABLE sitios_turisticos ADD COLUMN IF NOT EXISTS ciudad VARCHAR(100);
-
 INSERT INTO sitios_turisticos (nombre, descripcion, tipo, coordenadas, ciudad) VALUES
 -- Parques
 ('Cerro San Cristobal', 'El gran parque urbano de Santiago, con vistas panoramicas.', 'Parque', ST_SetSRID(ST_MakePoint(-70.6300, -33.4168), 4326), 'Santiago'),
