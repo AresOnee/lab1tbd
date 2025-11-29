@@ -7,6 +7,7 @@
     </div>
     <div class="site-content">
       <h3 class="site-name">{{ site.nombre }}</h3>
+      <p v-if="site.ciudad" class="site-location">📍 {{ site.ciudad }}</p>
       <p class="site-description">{{ truncateDescription(site.descripcion) }}</p>
       <div class="site-footer">
         <RatingStars :rating="site.calificacionPromedio || 0" />
@@ -98,6 +99,13 @@ const goToSite = () => {
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   color: #2c3e50;
+}
+
+.site-location {
+  color: #3498db;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .site-description {

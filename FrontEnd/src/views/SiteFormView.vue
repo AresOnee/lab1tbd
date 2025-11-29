@@ -38,6 +38,17 @@
         </div>
 
         <div class="form-group">
+          <label for="ciudad">Ciudad *</label>
+          <input
+            id="ciudad"
+            v-model="formData.ciudad"
+            type="text"
+            placeholder="Ej: Santiago"
+            required
+          />
+        </div>
+
+        <div class="form-group">
           <label for="descripcion">Descripción *</label>
           <textarea
             id="descripcion"
@@ -110,6 +121,7 @@ const isEdit = computed(() => !!siteId.value)
 const formData = reactive({
   nombre: '',
   tipo: '',
+  ciudad: '',
   descripcion: '',
   latitud: null,
   longitud: null
@@ -155,6 +167,7 @@ onMounted(async () => {
       const site = await sitesStore.fetchById(siteId.value)
       formData.nombre = site.nombre
       formData.tipo = site.tipo
+      formData.ciudad = site.ciudad || ''
       formData.descripcion = site.descripcion
       formData.latitud = site.latitud
       formData.longitud = site.longitud
